@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+  "name": "AIDUO",
+  "version": "1.0",
+  "description": "斗图插件",
+  "content_scripts": [{
+    "matches": ["*://pic.sogou.com/*", "*://www.phizhub.com/", "*://github.com/*"],
+    "js": ["js/content.js"]
+  }],
+  "permissions": [
+    "http://pic.sogou.com/pic/emo/searchList.jsp",
+    "https://fabiaoqing.com/search/search/keyword/*"
+  ]
+}
