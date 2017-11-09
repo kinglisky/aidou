@@ -3,12 +3,26 @@
   "name": "AIDUO",
   "version": "1.0",
   "description": "斗图插件",
-  "content_scripts": [{
-    "matches": ["*://pic.sogou.com/*", "*://www.phizhub.com/", "*://github.com/*"],
-    "js": ["js/content.js"]
-  }],
+  "background": {
+    "scripts": [
+      "js/background.js"
+    ],
+    "persistent": true
+  },
+  // "content_scripts": [{
+  //   "matches": ["*://pic.sogou.com/*", "*://www.phizhub.com/", "*://github.com/*"],
+  //   "js": ["js/content.js"]
+  // }],
   "permissions": [
-    "http://pic.sogou.com/pic/emo/searchList.jsp",
-    "https://fabiaoqing.com/search/search/keyword/*"
-  ]
+    "*://*/",
+    "storage",
+    "notifications",
+    "tts",
+    "webRequest",
+    "webRequestBlocking",
+    "tabs",
+    "contextMenus",
+    "webNavigation"
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
