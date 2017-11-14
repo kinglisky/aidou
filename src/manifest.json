@@ -5,14 +5,10 @@
   "description": "斗图插件",
   "background": {
     "scripts": [
-      "js/background.js"
+      "background/temp.js"
     ],
     "persistent": true
   },
-  // "content_scripts": [{
-  //   "matches": ["*://pic.sogou.com/*", "*://www.phizhub.com/", "*://github.com/*"],
-  //   "js": ["js/content.js"]
-  // }],
   "permissions": [
     "*://*/",
     "storage",

@@ -2,12 +2,12 @@
   <div class="temp">{{ name }}</div>
 </template>
 
-<script lang="ts">
-import Vue from 'vue'
-
-export default Vue.extend({
-  props: ['name']
-})
+<script>
+export default {
+  data () {
+    return { name: 'fro tiem isss' }
+  }
+}
 </script>
 
 <style>
