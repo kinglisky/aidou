@@ -28,6 +28,7 @@
     "webpack-dev-server": "^2.9.4"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "vue": "^2.5.3",
     "vue-class-component": "^6.1.0",
     "vue-property-decorator": "^6.0.0"
