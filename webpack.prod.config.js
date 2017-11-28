@@ -1,5 +1,7 @@
 const webpack = require('webpack')
+const path = require('path')
 const base = require('./webpack.base.config')
+base.output.path = path.resolve(__dirname, './extension')
 base.devtool = '#source-map'
 base.plugins = (base.plugins || []).concat([
   new webpack.DefinePlugin({

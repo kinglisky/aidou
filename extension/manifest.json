@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+  "name": "AIDUO",
+  "version": "1.0",
+  "description": "斗图插件",
+  "background": {
+    "scripts": [
+      "vendor.js",
+      "background.js"
+    ],
+    "persistent": true
+  },
+  "permissions": [
+    "*://*/",
+    "storage",
+    "contextMenus"
+  ],
+  "content_scripts": [{
+    "matches": ["*://github.com/*"],
+    "js": ["vendor.js", "content.js"]
+  }]
+}

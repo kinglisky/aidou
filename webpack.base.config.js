@@ -1,6 +1,9 @@
 const path = require('path')
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-
+function resolve (dir) {
+  return path.join(__dirname, '..', dir)
+}
 module.exports = {
   entry: {
     popup: './src/popup/index.js',
@@ -8,8 +11,9 @@ module.exports = {
     background: './src/background/index.js'
   },
   output: {
-    path: path.resolve(__dirname, './extension'),
-    filename: '[name].js'
+    path: path.resolve(__dirname, './ext-dev'),
+    filename: '[name].js',
+    chunkFilename: '[name].js'
   },
   module: {
     rules: [
@@ -72,7 +76,7 @@ module.exports = {
   resolve: {
     extensions: ['*', '.js', '.vue', '.json'],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js'
+      '@': resolve('src')
     }
   },
   performance: {
@@ -80,6 +84,10 @@ module.exports = {
   },
   devtool: '#eval-source-map',
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      chunks: ['content', 'popup']
+    }),
     new HtmlWebpackPlugin({
       filename: 'popup.html',
       template: './src/popup/index.html',

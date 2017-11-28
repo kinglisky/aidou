@@ -9,9 +9,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.temp {
-  font-size: 20px;
-}
-</style>

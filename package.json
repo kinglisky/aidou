@@ -4,7 +4,8 @@
   "description": "chrome plugin",
   "main": "index.js",
   "scripts": {
-    "dev:popup": "webpack-dev-server --hot --config webpack.dev.config.js",
+    "dev": "webpack -w --config webpack.base.config.js",
+    "page": "webpack-dev-server --hot --config webpack.dev.config.js",
     "build": "webpack --config webpack.prod.config.js"
   },
   "repository": {
@@ -22,6 +23,7 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
     "babel-preset-stage-3": "^6.24.1",
+    "copy-webpack-plugin": "^4.2.3",
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
