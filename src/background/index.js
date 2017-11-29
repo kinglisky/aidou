@@ -1,32 +1,29 @@
-import axios from 'axios'
-import { API, DEFAULT_PARAMS } from './config'
+import crun from '@/common/crun'
+import QueryEngine from './queryEngine'
 import {
-  serialize,
   fetchImgToBase64
   // dataURItoBlob
 } from './util'
-
-const queryURL = `${API}?${serialize(DEFAULT_PARAMS)}`
-
-chrome.runtime.onMessage.addListener(function (evt, sender, sendResponse) {
-  const { type } = evt
-  if (type === 'fetchImg') {
-    axios.get(queryURL).then(({ data }) => {
-      const imgRes = data.items.map(it => {
-        return fetchImgToBase64(it.locImageLink).then(base64 => {
-          return {
-            base64,
-            link: it.locImageLink
-          }
-        })
+chrome.extension.sendMessage({
+  event: 'one',
+  params: {}
+})
+crun.$on('fetch-expression', params => {
+  QueryEngine.sogou(params).then(data => {
+    const link = data[0].locImageLink
+    fetchImgToBase64(link).then(base64 => {
+      chrome.runtime.sendMessage({
+        event: 'receive-expression',
+        params: { link, base64 }
       })
-      Promise.all(imgRes).then(res => {
-        console.log(res[0], res.length)
-        sendResponse(res[0])
-      })
+      // crun.$emit('receive-expression', { link, base64 })
     })
-  }
-  return true
+    // data.forEach(({ locImageLink: link }) => {
+    //   fetchImgToBase64(link).then(base64 => {
+    //     crun.$emit('receive-expression', { link, base64 })
+    //   })
+    // })
+  })
 })
 
 // const data = new window.FormData()

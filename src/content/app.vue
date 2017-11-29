@@ -1,22 +1,34 @@
 <template>
   <section id="chrome-extension-aidou">
-    <input class="search-input" type="text" v-model.trim="keyword">
-    <expression-list :data="imgList"></expression-list>
+    <input type="search"
+      class="search-input"
+      v-model.trim="keyword"
+      @keyup.enter="fetchExp">
+    <expression-list :query="query"></expression-list>
   </section>
 </template>
 
 <script>
 import ExpressionList from './components/expression-list'
-
 export default {
   data () {
     return {
       keyword: '',
-      imgList: []
+      query: ''
     }
   },
 
+  computed: {
+    
+  },
+
   created () {
+  },
+
+  methods: {
+    fetchExp () {
+      this.query = this.keyword
+    }
   },
 
   components: {

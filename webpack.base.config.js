@@ -1,9 +1,6 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-function resolve (dir) {
-  return path.join(__dirname, '..', dir)
-}
 module.exports = {
   entry: {
     popup: './src/popup/index.js',
@@ -76,7 +73,7 @@ module.exports = {
   resolve: {
     extensions: ['*', '.js', '.vue', '.json'],
     alias: {
-      '@': resolve('src')
+      '@': path.resolve(__dirname, './src')
     }
   },
   performance: {
