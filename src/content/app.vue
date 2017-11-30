@@ -42,16 +42,16 @@ export default {
 #chrome-extension-aidou {
   $border-color: #d1d5da;
   position: fixed;
-  bottom: 10px;
-  left: 10px;
-  width: 800px;
+  bottom: 0;
+  right: 0;
+  width: 600px;
   height: 400px;
   display: flex;
   flex-direction: column;
   z-index: 100;
+  box-sizing: border-box;
   border: 1px solid $border-color;
   border-radius: 3px;
-  box-shadow: 0 0 10px #eee;
   background: #fff;
 
   * {

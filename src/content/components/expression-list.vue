@@ -17,7 +17,8 @@ export default {
     return {
       data: [],
       size: 50,
-      page: 1
+      page: 1,
+      tatal: 0
     }
   },
 
@@ -36,27 +37,22 @@ export default {
     }
   },
 
-  mounted () {
-  },
-
   methods: {
     reset () {
       this.data = []
       this.page = 1
+      this.tatal = 0
     },
 
     fetchExpression () {
       if (!this.query) return
-      chrome.runtime.sendMessage({
-        event: 'fetch-expression',
-        params: this.params
-      })
-      // crun.$emit('fetch-expression', this.params)
+      crun.$emit('fetch-expression', this.params)
+        .then(this.receiveExpression)
     },
 
-    receiveExpression (it) {
-      console.log(it)
-      // this.data.push(it)
+    receiveExpression ({ data = [], tatal = 0 }) {
+      this.tatal = tatal
+      this.data = this.data.concat(data)
     }
   },
 

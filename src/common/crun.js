@@ -1,31 +1,34 @@
 const EVT_MAP = {}
 
-chrome.runtime.onMessage.addListener(({ event, params }) => {
-  const fns = EVT_MAP[event]
-  if (fns && fns.length) {
-    fns.forEach(fn => { fn(params) })
+chrome.runtime.onMessage.addListener(({ event, params }, sender, sendResponse) => {
+  const fn = EVT_MAP[event]
+  if (fn) {
+    fn(params, sendResponse)
   }
+  return true
 })
 
 export default {
   $on (event, fn) {
-    console.log('on', event)
-    const fns = EVT_MAP[event] || (EVT_MAP[event] = [])
-    fns.push(fn)
+    EVT_MAP[event] = fn
   },
 
-  $off (event, fn) {
-    const fns = EVT_MAP[event] || []
-    const index = fns.indexOf(fn)
-    if (~index) {
-      fns.splice(index, 1)
-    }
+  $off (event) {
+    delete EVT_MAP[event]
   },
 
-  $emit (event, params) {
-    console.log('emit', event)
+  $emit (event, params, inBg) {
     return new Promise(resolve => {
-      chrome.runtime.sendMessage({ event, params }, resolve)
+      if (inBg) {
+        chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+          const activeId = tabs[0] ? tabs[0].id : ''
+          if (activeId) {
+            chrome.tabs.sendMessage(activeId, { event, params }, resolve)
+          }
+        })
+      } else {
+        chrome.runtime.sendMessage({ event, params }, resolve)
+      }
     })
   }
 }

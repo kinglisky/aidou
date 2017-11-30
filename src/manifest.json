@@ -12,13 +12,9 @@
   "permissions": [
     "*://*/",
     "storage",
-    "notifications",
-    "tts",
-    "webRequest",
-    "webRequestBlocking",
     "tabs",
-    "contextMenus",
-    "webNavigation"
+    "clipboardWrite",
+    "clipboardRead"
   ],
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

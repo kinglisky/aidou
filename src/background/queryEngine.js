@@ -12,7 +12,8 @@ const CONFIG = {
       query: '',
       st: 5,
       start: 0,
-      xml_len: 100
+      xml_len: 100,
+      reqFrom: 'wap_result'
     }
   }
 }
@@ -27,12 +28,15 @@ export default {
     const defParams = CONFIG.SOGOU.PARAMS
     const params = merge(defParams, {
       query: `${query} 表情`,
-      start: (size - 1) * page,
+      start: (page - 1) * size,
       xml_len: size
     })
     const queryURL = `${api}?${serialize(params)}`
-    return axios.get(queryURL).then(({ data }) => {
-      return data && data.items || []
+    return axios.get(queryURL).then(({ data = {} }) => {
+      return {
+        data: (data.items || []).map(it => it.locImageLink),
+        total: data.totalNum || 0
+      }
     }, log)
   }
 }
