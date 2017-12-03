@@ -1,14 +1,19 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+function assetsPath (_path) {
+  return path.posix.join('static', _path)
+}
+
 module.exports = {
   entry: {
     popup: './src/popup/index.js',
+    main: './src/content/main.js',
     content: './src/content/index.js',
     background: './src/background/index.js'
   },
   output: {
-    path: path.resolve(__dirname, './ext-dev'),
+    path: path.resolve(__dirname, './dev'),
     filename: '[name].js',
     chunkFilename: '[name].js'
   },
@@ -62,10 +67,19 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
-        loader: 'file-loader',
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        loader: 'url-loader',
         options: {
-          name: '[name].[ext]?[hash]'
+          limit: 10000,
+          name: assetsPath('img/[name].[hash:7].[ext]')
+        }
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: assetsPath('fonts/[name].[hash:7].[ext]')
         }
       }
     ]
@@ -83,12 +97,19 @@ module.exports = {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      chunks: ['content', 'popup']
+      chunks: ['main', 'popup']
     }),
     new HtmlWebpackPlugin({
       filename: 'popup.html',
       template: './src/popup/index.html',
-      inject: false
+      chunks: ['vendor', 'popup'],
+      inject: true
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'content.html',
+      template: './src/content/index.html',
+      chunks: ['vendor', 'main'],
+      inject: true
     })
   ]
 }

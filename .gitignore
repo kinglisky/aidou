@@ -8,9 +8,10 @@ test/unit/coverage
 test/e2e/reports
 selenium-debug.log
 
-ext-dev/
-!ext-dev/manifest.json
-!ext-dev/hot-reload.js
+dev/*
+!dev/manifest.json
+!dev/hot-reload.js
+.vscode/
 
 # Editor directories and files
 .idea

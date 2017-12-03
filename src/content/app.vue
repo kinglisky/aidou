@@ -39,13 +39,21 @@ export default {
 
 
 <style lang="scss">
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
 #chrome-extension-aidou {
   $border-color: #d1d5da;
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 600px;
-  height: 400px;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   z-index: 100;
