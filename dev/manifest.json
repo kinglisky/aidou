@@ -14,6 +14,9 @@
   "permissions": [
     "*://*/",
     "storage",
+    "tts",
+    "webRequest",
+    "webRequestBlocking",
     "contextMenus",
     "clipboardWrite",
     "clipboardRead"
@@ -21,10 +24,10 @@
   "content_scripts": [
     {
       "matches": [
-        "*://github.com/*",
+        // "*://github.com/*",
         // "*://git.elenet.me/*",
         "*://www.baidu.com/*"
-        // "*://www.google.com/*"
+        // "*://www.google.com.hk/*"
       ],
       "js": [
         "vendor.js",

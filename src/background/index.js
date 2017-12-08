@@ -14,5 +14,5 @@ crun.$on('url-to-base64', (url, cb) => {
 })
 
 crun.$on('uniform-url', (base64, cb) => {
-  PicBed.sm(base64).then(cb)
+  PicBed.weibo(base64).then(cb, console.log)
 })

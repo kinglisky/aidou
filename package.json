@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "sweetalert": "^2.0.8",
     "vue": "^2.5.3"
   }
 }

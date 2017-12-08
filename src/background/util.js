@@ -24,6 +24,10 @@ export function standardizeBase64 (base64, type) {
   return base64.replace(/^data:.*;/, `data:image/${type};`)
 }
 
+export function removeBase64Head (base64) {
+  return base64.replace(/^data:.*base64,/, '')
+}
+
 export function dataURItoBlob (dataURI) {
   const data = dataURI.split(';base64,')
   const byte = window.atob(data[1])
