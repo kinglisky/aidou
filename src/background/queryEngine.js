@@ -23,6 +23,7 @@ function log (e) {
 }
 
 export default {
+  // 搜狗表情服务
   sogou ({ query, page, size }) {
     const api = CONFIG.SOGOU.API
     const defParams = CONFIG.SOGOU.PARAMS

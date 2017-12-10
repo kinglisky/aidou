@@ -48,8 +48,6 @@ export default {
           }
         })
       })
-      // this.$swal({ text: '上传图片至图床' }).then(() => {
-      // })
     }
   }
 }
