@@ -10,7 +10,7 @@ import copy from './copy'
 import LoadImg from './loading.gif'
 export default {
   props: {
-    url: String
+    exp: Object
   },
 
   data () {
@@ -29,23 +29,27 @@ export default {
 
   methods: {
     fetchImgData () {
-      if (!this.url) return
-      crun.$emit('url-to-base64', this.url).then(base64 => {
+      const { link } = this.exp
+      if (!link) return
+      crun.$emit('url-to-base64', link).then(base64 => {
         this.src = base64
       })
     },
 
     fetchMarkUrk () {
       if (!this.src) return
+      this.$swal('生成图床链接......', { button: false })
       crun.$emit('uniform-url', this.src).then(url => {
         const mdUrl = `![](${url})`
         copy(mdUrl, ok => {
-          if (ok) {
-            this.$swal({
-              title: '复制成功',
-              text: mdUrl
-            })
-          }
+          if (!ok) return
+          this.$swal({
+            title: '复制成功',
+            text: mdUrl,
+            icon: 'success',
+            buttons: false,
+            timer: 2000
+          })
         })
       })
     }
@@ -71,4 +75,3 @@ export default {
   }
 }
 </style>
-

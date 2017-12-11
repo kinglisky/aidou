@@ -23,13 +23,12 @@
   ],
   "content_scripts": [
     {
-      "matches": ["*://*/*"],
-      // "matches": [
-      //   // "*://github.com/*",
-      //   // "*://git.elenet.me/*",
-      //   "*://www.baidu.com/*"
-      //   // "*://www.google.com.hk/*"
-      // ],
+      "matches": [
+        // "*://github.com/*",
+        // "*://git.elenet.me/*",
+        "*://www.baidu.com/*"
+        // "*://www.google.com.hk/*"
+      ],
       "js": [
         "vendor.js",
         "content.js"

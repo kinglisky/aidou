@@ -1,6 +1,6 @@
 <template>
   <div class="cpt-expression-list">
-    <expression v-for="url in data" :key="url" :url="url"></expression>
+    <expression v-for="exp in data" :key="exp.link" :exp="exp"></expression>
   </div>
 </template>
 

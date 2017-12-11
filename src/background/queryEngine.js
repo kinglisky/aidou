@@ -1,4 +1,5 @@
 import axios from 'axios'
+import swal from 'sweetalert'
 
 import {
   merge,
@@ -19,7 +20,7 @@ const CONFIG = {
 }
 
 function log (e) {
-  console.log(e)
+  swal('嗯，冷静一下~', '查询服务瓦特了...', 'error')
 }
 
 export default {
@@ -35,7 +36,10 @@ export default {
     const queryURL = `${api}?${serialize(params)}`
     return axios.get(queryURL).then(({ data = {} }) => {
       return {
-        data: (data.items || []).map(it => it.locImageLink),
+        data: (data.items || []).map(it => ({
+          link: it.locImageLink,
+          suffix: it.type
+        })),
         total: data.totalNum || 0
       }
     }, log)
