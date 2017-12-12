@@ -1,13 +1,14 @@
 <template>
   <div class="cpt-expression" @click="fetchMarkUrk">
-    <img :src="src">
+    <img v-show="src" :src="src">
+    <loading v-show="!src"></loading>
   </div>
 </template>
 
 <script>
 import crun from '@/common/crun'
 import copy from './copy'
-import LoadImg from './loading.gif'
+import Loading from './loading'
 export default {
   props: {
     exp: Object
@@ -15,12 +16,12 @@ export default {
 
   data () {
     return {
-      src: LoadImg
+      src: ''
     }
   },
 
   watch: {
-    url: 'fetchImgData'
+    exp: 'fetchImgData'
   },
 
   created () {
@@ -53,6 +54,10 @@ export default {
         })
       })
     }
+  },
+
+  components: {
+    Loading
   }
 }
 </script>
