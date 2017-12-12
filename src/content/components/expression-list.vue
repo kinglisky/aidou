@@ -1,10 +1,11 @@
 <template>
-  <div class="cpt-expression-list">
+  <div class="cpt-expression-list" @scroll="requestExpression">
     <expression v-for="exp in data" :key="exp.link" :exp="exp"></expression>
   </div>
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
 import Expression from './expression'
 import crun from '@/common/crun'
 
@@ -18,7 +19,8 @@ export default {
       data: [],
       size: 50,
       page: 1,
-      tatal: 0
+      total: 0,
+      loading: false
     }
   },
 
@@ -41,8 +43,17 @@ export default {
     reset () {
       this.data = []
       this.page = 1
-      this.tatal = 0
+      this.total = 0
     },
+
+    requestExpression: debounce(function ({ target }) {
+      const { data, total, loading } = this
+      if (data.length === total || loading) return
+      const { scrollHeight, offsetHeight, scrollTop } = target
+      if (scrollTop + offsetHeight >= scrollHeight) {
+        this.page += 1
+      }
+    }, 400),
 
     fetchExpression () {
       if (!this.query) return
@@ -50,9 +61,10 @@ export default {
         .then(this.receiveExpression)
     },
 
-    receiveExpression ({ data = [], tatal = 0 }) {
-      this.tatal = tatal
+    receiveExpression ({ data = [], total = 0 }) {
+      this.total = total
       this.data = this.data.concat(data)
+      this.loading = false
     }
   },
 
