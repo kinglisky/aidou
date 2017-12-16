@@ -1,37 +1,74 @@
 <template>
   <section id="chrome-extension-aidou">
-    <input type="search"
-      class="search-input"
-      v-model.trim="keyword"
-      @keyup.enter="fetchExp">
-    <expression-list :query="query"></expression-list>
+    <app-header @fetch-exp="fetchExp"></app-header>
+    <expression-list
+      :data="data"
+      :total="total"
+      :page.sync="page"
+      :loading="loading">
+    </expression-list>
   </section>
 </template>
 
 <script>
+import debounce from 'lodash/debounce'
+import crun from '@/common/crun'
+import AppHeader from './components/app-header'
 import ExpressionList from './components/expression-list'
 export default {
   data () {
     return {
-      keyword: '',
-      query: ''
+      query: '',
+      data: [],
+      size: 10,
+      page: 1,
+      total: 0,
+      loading: false
     }
   },
 
   computed: {
-    
+    params () {
+      const { query, page, size } = this
+      return { query, page, size }
+    }
   },
 
-  created () {
+  watch: {
+    query: 'reset',
+    params: {
+      deep: true,
+      handler: 'fetchExpression'
+    }
   },
 
   methods: {
-    fetchExp () {
-      this.query = this.keyword
+    fetchExp (v) {
+      this.query = v
+    },
+
+    reset () {
+      this.data = []
+      this.page = 1
+      this.total = 0
+    },
+
+    fetchExpression () {
+      if (!this.query) return
+      this.loading = true
+      crun.$emit('fetch-expression', this.params)
+        .then(this.receiveExpression)
+    },
+
+    receiveExpression ({ data = [], total = 0 }) {
+      this.loading = false
+      this.total = total
+      this.data = this.data.concat(data)
     }
   },
 
   components: {
+    AppHeader,
     ExpressionList
   }
 }
@@ -40,45 +77,30 @@ export default {
 
 <style lang="scss">
 * {
+  box-sizing: border-box;
   padding: 0;
   margin: 0;
-  box-sizing: border-box;
 }
 
-html, body {
-  height: 100%;
+html,
+body {
   width: 100%;
+  height: 100%;
 }
 
 #chrome-extension-aidou {
-  $border-color: #d1d5da;
-  width: 100%;
-  height: 100%;
+  $border-color: #ebebeb;
+  z-index: 100;
   display: flex;
   flex-direction: column;
-  z-index: 100;
   box-sizing: border-box;
-  border: 1px solid $border-color;
-  border-radius: 3px;
+  width: 100%;
+  height: 100%;
+  padding: 30px 40px;
+  color: #3e5165;
+  border-left: 1px solid $border-color;
   background: #fff;
-
-  * {
-    box-sizing: border-box;
-  }
-
-  .search-input {
-    display: block;
-    height: 40px;
-    width: 100%;
-    padding: 0 10px;
-    font-size: 14px;
-    border: none;
-    border-bottom: 1px solid $border-color;
-
-    &:focus {
-      outline: none;
-    }
-  }
+  font-weight: 200;
 }
 </style>
 

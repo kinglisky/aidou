@@ -33,34 +33,31 @@ export default {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
+  width: 100%;
+  height: 100%;
 
-  .loader{
+  .loader {
     width: 100%;
     text-align: center;
 
     span {
-      border-radius: 50%;
-      display: inline-block;
       position: absolute;
+      display: inline-block;
+      border-radius: 50%;
       animation: 3s infinite linear;
 
       &:nth-child(1) {
-        // background: #01a2a6;
-        background: #FF6138;
+        background: #01a2a6;
         animation: kiri 1.2s infinite linear;
       }
       &:nth-child(2) {
-        // background: #29d9c2;
-        background: #FFFF9D;
         z-index: 100;
+        background: #29d9c2;
       }
       &:nth-child(3) {
-        // background: #bdf271;
-        background: #00A388;
+        background: #bdf271;
         animation: kanan 1.2s infinite linear;
       }
     }
@@ -71,28 +68,30 @@ export default {
   0% {
     transform: translateX(20px);
   }
-   
-	50%{
+
+  50% {
     transform: translateX(-20px);
-	}
-	
-	100%{
-    transform: translateX(20px);
+  }
+
+  100% {
     z-index: 200;
-	}
+
+    transform: translateX(20px);
+  }
 }
 
 @keyframes kiri {
   0% {
-    transform: translateX(-20px);
     z-index: 200;
-  }
-	50%{
-    transform: translateX(20px);
-	}
-	100%{
+
     transform: translateX(-20px);
-	}
+  }
+  50% {
+    transform: translateX(20px);
+  }
+  100% {
+    transform: translateX(-20px);
+  }
 }
 </style>
 

@@ -65,13 +65,13 @@ export default {
 <style lang="scss">
 .cpt-expression {
   position: relative;
+  z-index: 100;
   width: 200px;
   height: 200px;
   padding: 10px;
   margin: 20px 0;
-  z-index: 100;
+
   cursor: pointer;
-  border: 1px solid #eee;
 
   img {
     display: block;

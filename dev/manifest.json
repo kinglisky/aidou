@@ -25,9 +25,9 @@
     {
       "matches": [
         // "*://github.com/*",
-        // "*://git.elenet.me/*",
-        "*://www.baidu.com/*"
-        // "*://www.google.com.hk/*"
+        "*://git.elenet.me/*",
+        "*://www.baidu.com/*",
+        "*://www.google.com/*"
       ],
       "js": [
         "vendor.js",

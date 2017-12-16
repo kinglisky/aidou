@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import App from './app.vue'
 import swal from 'sweetalert'
+import '../style/style.css'
 
 Vue.prototype.$swal = swal
 

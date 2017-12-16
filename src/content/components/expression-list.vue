@@ -1,86 +1,99 @@
 <template>
-  <div class="cpt-expression-list" @scroll="requestExpression">
-    <expression v-for="exp in data" :key="exp.link" :exp="exp"></expression>
-  </div>
+  <section class="cpt-expression-list">
+    <div class="expression-wrapper" @scroll="requestExpression">
+      <expression v-for="exp in data" :key="exp.link" :exp="exp"></expression>
+    </div>
+    <div class="loading-wrapper" v-show="loading">
+      <loading :size="10"></loading>
+    </div>
+  </section>
 </template>
 
 <script>
 import debounce from 'lodash/debounce'
 import Expression from './expression'
 import crun from '@/common/crun'
+import Loading from './loading'
 
 export default {
   props: {
-    query: String
-  },
+    data: {
+      type: Array,
+      default () {
+        return []
+      }
+    },
 
-  data () {
-    return {
-      data: [],
-      size: 50,
-      page: 1,
-      total: 0,
-      loading: false
-    }
+    page: {
+      type: Number,
+      default: 1
+    },
+
+    total: {
+      type: Number,
+      default: 0
+    },
+
+    loading: Boolean
   },
 
   computed: {
-    params () {
-      const { query, page, size } = this
-      return { query, page, size }
-    }
-  },
+    pageNum: {
+      get () {
+        return this.page
+      },
 
-  watch: {
-    query: 'reset',
-    params: {
-      deep: true,
-      handler: 'fetchExpression'
+      set (v) {
+        this.$emit('update:page', v)
+      }
     }
   },
 
   methods: {
-    reset () {
-      this.data = []
-      this.page = 1
-      this.total = 0
-    },
-
     requestExpression: debounce(function ({ target }) {
       const { data, total, loading } = this
       if (data.length === total || loading) return
       const { scrollHeight, offsetHeight, scrollTop } = target
       if (scrollTop + offsetHeight >= scrollHeight) {
-        this.page += 1
+        this.pageNum += 1
       }
     }, 400),
-
-    fetchExpression () {
-      if (!this.query) return
-      crun.$emit('fetch-expression', this.params)
-        .then(this.receiveExpression)
-    },
-
-    receiveExpression ({ data = [], total = 0 }) {
-      this.total = total
-      this.data = this.data.concat(data)
-      this.loading = false
-    }
   },
 
   components: {
-    Expression
+    Expression,
+    Loading
   }
 }
 </script>
 
 <style lang="scss">
 .cpt-expression-list {
+  position: relative;
   flex: 1;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  overflow-y: auto;
+  overflow: hidden;
+  margin-top: 20px;
+
+  .expression-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    overflow-y: auto;
+    height: 100%;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .loading-wrapper {
+    position: absolute;
+    z-index: 10;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+  }
 }
 </style>
 
