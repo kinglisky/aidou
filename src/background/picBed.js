@@ -1,5 +1,4 @@
 import axios from 'axios'
-import swal from 'sweetalert'
 import { dataURItoBlob, removeBase64Head } from './util'
 
 const CONFIG = {
@@ -34,14 +33,8 @@ function pid2url ({ pid, ext }, type = 'large') {
   return `https://ws${zone}.sinaimg.cn/${type}/${pid}${ext}`
 }
 
-function weiboLoding () {
-}
-
-function log (params) {
-  swal({
-    title: '额，图床服务发生一点错误',
-    text: '然后，啥也别问换个图床试试~'
-  })
+function log () {
+  window.alert('emmm... 图传服务好像崩掉了~')
 }
 
 export default {
@@ -51,7 +44,11 @@ export default {
     data.append('smfile', dataURItoBlob(base64, 'temp.png'))
     return axios.post(api, data).then(({ data }) => {
       const { data: res } = data
-      return res.url
+      return {
+        url: res.url,
+        err: '',
+        server: 'sm'
+      }
     }, log)
   },
 
@@ -61,15 +58,27 @@ export default {
     data.append('b64_data', removeBase64Head(base64))
     return axios.post(api, data).then(({ data }) => {
       let url = ''
+      let err = ''
       try {
         const res = JSON.parse(data.substring(data.indexOf('{"')))
-        url = pid2url({
-          pid: res.data.pics.pic_1.pid,
-          ext: '.jpg'
-        })
+        const { pid, ret } = res.data.pics.pic_1 || {}
+        if (ret === 1) {
+          url = pid2url({
+            pid,
+            ext: '.jpg'
+          })
+        } else {
+          err = '微博图床未登录'
+        }
       } catch (e) {
+        url = ''
+        err = '微博图床发生一些错误'
       }
-      return url
+      return {
+        url,
+        err,
+        server: 'weibo'
+      }
     }, log)
   }
 }

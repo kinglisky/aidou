@@ -7,8 +7,10 @@
 
 <script>
 import crun from '@/common/crun'
-import copy from './copy'
+import copy from '../util/copy'
 import Loading from './loading'
+import showLinks from './showLinks'
+
 export default {
   props: {
     exp: Object
@@ -39,20 +41,47 @@ export default {
 
     fetchMarkUrk () {
       if (!this.src) return
-      this.$swal('生成图床链接......', { button: false })
-      crun.$emit('uniform-url', this.src).then(url => {
-        const mdUrl = `![](${url})`
-        copy(mdUrl, ok => {
-          if (!ok) return
-          this.$swal({
-            title: '复制成功',
-            text: mdUrl,
-            icon: 'success',
-            buttons: false,
-            timer: 2000
-          })
+      this.$swal('生成图床链接中......', { button: false })
+      crun.$emit('uniform-url', this.src).then(({ url, err = '图床服务出错!', server }) => {
+        if (!url) {
+          return this.picBedErrHandler(server, err)
+        }
+        this.$swal({
+          content: showLinks(url),
+          buttons: false
         })
+
+        // const mdUrl = `![](${url})`
+        // copy(mdUrl, ok => {
+        //   if (!ok) return
+        //   this.$swal({
+        //     title: '复制成功',
+        //     text: mdUrl,
+        //     icon: 'success',
+        //     buttons: false,
+        //     timer: 2000
+        //   })
+        // })
       })
+    },
+
+    picBedErrHandler (server, err) {
+      if (server === 'weibo') {
+        this.$swal({
+          text: `${err}，先登录新微博后重试`,
+          icon: 'warning',
+          buttons: true
+          }).then(v => {
+            if (!v) return
+             window.open('http://weibo.com/?topnav=1&mod=logo')
+          })
+        } else {
+          this.$swal({
+          text: `emmm... 图床好像挂掉了，换个图床试试`,
+          icon: 'warning',
+          buttons: true
+        })
+      }
     }
   },
 

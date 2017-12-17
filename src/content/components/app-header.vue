@@ -146,11 +146,10 @@ export default {
       }
 
       &:hover {
-        color: #55b559;
+        color: #dc602e;
 
         .text {
           opacity: 1;
-
           transform: translate3d(-50%, -120%, 0);
         }
       }

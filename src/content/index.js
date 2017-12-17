@@ -1,10 +1,36 @@
-const iframe = document.createElement('iframe')
-iframe.style.position = 'fixed'
-iframe.style.bottom = 0
-iframe.style.right = 0
-iframe.style.width = '600px'
-iframe.style.height = '100%'
-iframe.style.border = 'none'
-iframe.style.zIndex = 9999
-iframe.src = window.chrome.extension.getURL('content.html')
-document.body.appendChild(iframe)
+const IFRAME = document.createElement('IFRAME')
+const SHOW_APP = 'translate3d(0, 0, 0)'
+const HIDDEN_APP = 'translate3d(100%, 0, 0)'
+
+IFRAME.style.position = 'fixed'
+IFRAME.style.bottom = 0
+IFRAME.style.right = 0
+IFRAME.style.width = '600px'
+IFRAME.style.height = '100%'
+IFRAME.style.border = 'none'
+IFRAME.style.zIndex = 9999
+IFRAME.style.opacity = 0
+IFRAME.style.transform = `translate3d(100%, 0, 0)`
+IFRAME.style.transition = 'opacity .5s ease-in-out, transform .5s ease-in-out'
+IFRAME.src = window.chrome.extension.getURL('content.html')
+
+function showApp () {
+  IFRAME.style.opacity = 1
+  IFRAME.style.transform = `translate3d(0, 0, 0)`
+}
+
+function hiddenApp () {
+  IFRAME.style.opacity = 0
+  IFRAME.style.transform = `translate3d(100%, 0, 0)`
+}
+
+document.body.appendChild(IFRAME)
+window.addEventListener('message', event => {
+  const { id, value } = event.data || {}
+  if (id !== 'chrome-extension-aidou') return
+  if (value) {
+    showApp()
+  } else {
+    hiddenApp()
+  }
+})

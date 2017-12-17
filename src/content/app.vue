@@ -7,6 +7,7 @@
       :page.sync="page"
       :loading="loading">
     </expression-list>
+    <span class="icon-close close-btn" @click="toggleView(false)"></span>
   </section>
 </template>
 
@@ -42,6 +43,10 @@ export default {
     }
   },
 
+  created () {
+    crun.$on('show-app', this.toggleView)
+  },
+
   methods: {
     fetchExp (v) {
       this.query = v
@@ -64,6 +69,13 @@ export default {
       this.loading = false
       this.total = total
       this.data = this.data.concat(data)
+    },
+
+    toggleView (visible) {
+      window.parent.postMessage({
+        id: 'chrome-extension-aidou',
+        value: visible
+      }, '*')
     }
   },
 
@@ -86,21 +98,37 @@ html,
 body {
   width: 100%;
   height: 100%;
+  font-size: 12px;
 }
 
 #chrome-extension-aidou {
-  $border-color: #ebebeb;
+  position: relative;
   z-index: 100;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  padding: 30px 40px;
-  color: #3e5165;
-  border-left: 1px solid $border-color;
+  padding: 40px 50px 40px 60px;
+  border-left: 1px solid #ebebeb;
   background: #fff;
+  color: #3e5165;
   font-weight: 200;
+
+  .close-btn {
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    color: #929aa3;
+    font-size: 14px;
+    cursor: pointer;
+    transition: color .2s ease-in;
+
+    &:hover {
+      color: #55b559;
+    }
+  }
 }
 </style>
 

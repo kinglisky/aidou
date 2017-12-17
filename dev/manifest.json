@@ -24,10 +24,7 @@
   "content_scripts": [
     {
       "matches": [
-        // "*://github.com/*",
-        "*://git.elenet.me/*",
-        "*://www.baidu.com/*",
-        "*://www.google.com/*"
+        "*://www.baidu.com/*"
       ],
       "js": [
         "vendor.js",
@@ -35,6 +32,12 @@
       ]
     }
   ],
+  "browser_action": {
+    "default_icon": {
+      "19": "icon.png",
+      "38": "icon.png"
+    }
+  },
   "web_accessible_resources": [
     "content.html"
   ],
