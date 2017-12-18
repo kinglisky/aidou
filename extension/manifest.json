@@ -13,10 +13,30 @@
   "permissions": [
     "*://*/",
     "storage",
-    "contextMenus"
+    "contextMenus",
+    "clipboardWrite",
+    "clipboardRead"
   ],
-  "content_scripts": [{
-    "matches": ["*://github.com/*"],
-    "js": ["vendor.js", "content.js"]
-  }]
+  "content_scripts": [
+    {
+      "matches": [
+        "*://www.baidu.com/*"
+      ],
+      "js": [
+        "vendor.js",
+        "content.js"
+      ]
+    }
+  ],
+  "options_page": "options.html",
+  "browser_action": {
+    "default_icon": {
+      "19": "icon.png",
+      "38": "icon.png"
+    }
+  },
+  "web_accessible_resources": [
+    "content.html"
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

@@ -7,81 +7,31 @@
       :page.sync="page"
       :loading="loading">
     </expression-list>
+    <config></config>
     <span class="icon-close close-btn" @click="toggleView(false)"></span>
   </section>
 </template>
 
 <script>
 import debounce from 'lodash/debounce'
-import crun from '@/common/crun'
 import AppHeader from './components/app-header'
 import ExpressionList from './components/expression-list'
+import Config from './components/config'
+import toggleView from './mixins/toggleView'
+import fetchExpression from './mixins/fetchExpression'
+
 export default {
+  mixins: [toggleView, fetchExpression],
+
   data () {
     return {
-      query: '',
-      data: [],
-      size: 10,
-      page: 1,
-      total: 0,
-      loading: false
-    }
-  },
-
-  computed: {
-    params () {
-      const { query, page, size } = this
-      return { query, page, size }
-    }
-  },
-
-  watch: {
-    query: 'reset',
-    params: {
-      deep: true,
-      handler: 'fetchExpression'
-    }
-  },
-
-  created () {
-    crun.$on('show-app', this.toggleView)
-  },
-
-  methods: {
-    fetchExp (v) {
-      this.query = v
-    },
-
-    reset () {
-      this.data = []
-      this.page = 1
-      this.total = 0
-    },
-
-    fetchExpression () {
-      if (!this.query) return
-      this.loading = true
-      crun.$emit('fetch-expression', this.params)
-        .then(this.receiveExpression)
-    },
-
-    receiveExpression ({ data = [], total = 0 }) {
-      this.loading = false
-      this.total = total
-      this.data = this.data.concat(data)
-    },
-
-    toggleView (visible) {
-      window.parent.postMessage({
-        id: 'chrome-extension-aidou',
-        value: visible
-      }, '*')
     }
   },
 
   components: {
     AppHeader,
-    ExpressionList
+    ExpressionList,
+    Config,
   }
 }
 </script>

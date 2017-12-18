@@ -18,6 +18,8 @@
 
 
 <script>
+import crun from '@/common/crun'
+
 export default {
   data () {
     return {
@@ -27,7 +29,7 @@ export default {
 
   computed: {
     btnList () {
-      const { noop } = this
+      const { noop, openOptionPage } = this
       return [
         {
           icon: 'icon-shuffle',
@@ -42,7 +44,7 @@ export default {
         {
           icon: 'icon-settings',
           text: '设置',
-          handler: noop
+          handler: openOptionPage
         }
       ]
     }
@@ -50,7 +52,10 @@ export default {
 
   methods: {
     noop () {
-      alert('fuck you')
+    },
+
+    openOptionPage () {
+      crun.$emit('open-option-page')
     },
 
     fetchExp () {
@@ -78,6 +83,7 @@ export default {
     flex: 3;
 
     input {
+      flex: 1;
       display: block;
       height: 100%;
       border: none;

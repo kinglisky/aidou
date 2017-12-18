@@ -7,7 +7,6 @@ function assetsPath (_path) {
 
 module.exports = {
   entry: {
-    popup: './src/popup/index.js',
     main: './src/content/main.js',
     content: './src/content/index.js',
     background: './src/background/index.js'
@@ -97,13 +96,7 @@ module.exports = {
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      chunks: ['main', 'popup']
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'popup.html',
-      template: './src/popup/index.html',
-      chunks: ['vendor', 'popup'],
-      inject: true
+      chunks: ['main']
     }),
     new HtmlWebpackPlugin({
       filename: 'content.html',
