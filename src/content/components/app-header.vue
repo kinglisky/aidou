@@ -2,12 +2,13 @@
   <section class="cpt-app-header">
     <div class="search-input">
       <span class="icon-search"></span>
-      <input v-model.trim="keyword" @keyup.enter="fetchExp">
+      <input v-model.trim="keyword"
+        @keyup.enter="fetchExp"
+        @focus="showView('search')">
     </div>
     <ul class="oper-btns">
       <li v-for="btn in btnList"
-        :key="btn.text"
-        class="btn" 
+        :key="btn.text" class="btn" 
         @click="btn.handler">
         <span class="icon" :class="btn.icon"></span>
         <span class="text">{{ btn.text }}</span>
@@ -21,6 +22,13 @@
 import crun from '@/common/crun'
 
 export default {
+  props: {
+    view: {
+      type: String,
+      default: 'search'
+    }
+  },
+
   data () {
     return {
       keyword: ''
@@ -28,8 +36,18 @@ export default {
   },
 
   computed: {
+    syncView: {
+      get () {
+        return this.view
+      },
+
+      set (v) {
+        this.$emit('update:view', v)
+      }
+    },
+
     btnList () {
-      const { noop, openOptionPage } = this
+      const { noop, shwoCollect, showConfig} = this
       return [
         {
           icon: 'icon-shuffle',
@@ -39,12 +57,12 @@ export default {
         {
           icon: 'icon-favorite_border',
           text: '我的收藏',
-          handler: noop
+          handler: shwoCollect
         },
         {
           icon: 'icon-settings',
           text: '设置',
-          handler: openOptionPage
+          handler: showConfig
         }
       ]
     }
@@ -54,8 +72,21 @@ export default {
     noop () {
     },
 
-    openOptionPage () {
-      crun.$emit('open-option-page')
+    showView (view) {
+      const { syncView } = this
+      if (syncView !== view) {
+        this.syncView = view
+      } else {
+        this.syncView = 'search'
+      }
+    },
+
+    showConfig () {
+      this.showView('config')
+    },
+
+    shwoCollect () {
+      this.showView('collect')
     },
 
     fetchExp () {
@@ -67,15 +98,17 @@ export default {
 
 <style lang="scss">
 .cpt-app-header {
-  $main-color: #929aa3;
   display: flex;
   align-items: center;
   height: 40px;
   padding: 10px;
   border: 1px solid #eee;
   border-radius: 40px;
+  margin-bottom: 20px;
   box-shadow: 0 3px 8px rgba(0, 0, 0, .1);
   background: #fff;
+
+  $main-color: #929aa3;
 
   .search-input {
     display: flex;
@@ -83,8 +116,8 @@ export default {
     flex: 3;
 
     input {
-      flex: 1;
       display: block;
+      flex: 1;
       height: 100%;
       border: none;
       outline: none;
@@ -115,9 +148,12 @@ export default {
       position: relative;
       height: 100%;
       color: $main-color;
+      // display: flex;
+      // align-items: center;
 
       .icon {
         font-size: 16px;
+        vertical-align: middle;
 
         cursor: pointer;
       }
@@ -156,6 +192,7 @@ export default {
 
         .text {
           opacity: 1;
+
           transform: translate3d(-50%, -120%, 0);
         }
       }

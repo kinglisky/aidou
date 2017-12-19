@@ -1,7 +1,7 @@
 const webpack = require('webpack')
-const path = require('path')
 const base = require('./webpack.base.config')
-base.output.path = path.resolve(__dirname, './extension')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+
 base.devtool = '#source-map'
 base.plugins = (base.plugins || []).concat([
   new webpack.DefinePlugin({
@@ -10,13 +10,19 @@ base.plugins = (base.plugins || []).concat([
     }
   }),
   new webpack.optimize.UglifyJsPlugin({
-    sourceMap: true,
+    sourceMap: false,
     compress: {
       warnings: false
     }
   }),
   new webpack.LoaderOptionsPlugin({
     minimize: true
-  })
+  }),
+  new CopyWebpackPlugin([
+    {
+      from: 'static/icon.png',
+      to: 'icon.png'
+    }
+  ])
 ])
 module.exports = base

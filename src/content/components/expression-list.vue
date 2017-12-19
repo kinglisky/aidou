@@ -6,6 +6,9 @@
     <div class="loading-wrapper" v-show="loading">
       <loading :size="10"></loading>
     </div>
+    <div class="empyt-wrapper" v-show="showEmpyt">
+      <img src="../../assets/no-data.png">
+    </div>
   </section>
 </template>
 
@@ -46,6 +49,10 @@ export default {
       set (v) {
         this.$emit('update:page', v)
       }
+    },
+
+    showEmpyt () {
+      return !this.data.length && !this.loading
     }
   },
 
@@ -69,10 +76,9 @@ export default {
 
 <style lang="scss">
 .cpt-expression-list {
-  position: relative;
-  flex: 1;
   overflow: hidden;
-  margin-top: 20px;
+  width: 100%;
+  height: 100%;
 
   .expression-wrapper {
     display: flex;
@@ -86,13 +92,27 @@ export default {
     }
   }
 
+  .empyt-wrapper,
   .loading-wrapper {
     position: absolute;
     z-index: 10;
     bottom: 0;
     left: 0;
     width: 100%;
+    height: 100%;
+  }
+
+  .loading-wrapper {
     height: 40px;
+  }
+
+  .empyt-wrapper {
+    display: flex;
+    align-items: center;
+
+    img {
+      margin: 0 auto;
+    }
   }
 }
 </style>

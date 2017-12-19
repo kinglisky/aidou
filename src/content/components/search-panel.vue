@@ -1,8 +1,24 @@
+<template>
+  <expression-list
+    :data="data"
+    :total="total"
+    :page.sync="page"
+    :loading="loading">
+  </expression-list>
+</template>
+
+<script>
+import ExpressionList from './expression-list'
 import crun from '@/common/crun'
 export default {
+  props: {
+    query: {
+      type: String,
+      default: ''
+    },
+  },
   data () {
     return {
-      query: '',
       data: [],
       size: 10,
       page: 1,
@@ -27,10 +43,6 @@ export default {
   },
 
   methods: {
-    fetchExp (v) {
-      this.query = v
-    },
-
     reset () {
       this.data = []
       this.page = 1
@@ -49,5 +61,10 @@ export default {
       this.total = total
       this.data = this.data.concat(data)
     }
+  },
+
+  components: {
+    ExpressionList
   }
 }
+</script>

@@ -1,6 +1,6 @@
 <template>
-  <section class="cpt-config">
-    <ul class="config-panel">
+  <section class="cpt-config-panel">
+    <ul class="config-panel" v-if="config">
       <li class="config-item">
         <span class="config-label">图床服务：</span>
         <div class="config-content">
@@ -29,7 +29,6 @@
 
 <script>
 import crun from '@/common/crun'
-import config from '@/common/config'
 
 const PIC_BED = {
   SM: 'sm',
@@ -40,27 +39,30 @@ export default {
   data () {
     this.PIC_BED = PIC_BED
     return {
-      config: Object.assign({}, config)
+      config: null
+    }
+  },
+
+  computed: {
+    appConf () {
+      return this.$root.appConf
     }
   },
 
   watch: {
+    appConf (v) {
+      this.config = v
+    },
+
     config: {
       deep: true,
       handler: 'updateConfig'
     }
   },
 
-  created () {
-    this.initCong()
-  },
-
   methods: {
-    initCong () {
-      this.config = this.$root.appConf
-    },
-
     updateConfig (conf) {
+      if (!conf) return
       crun.$emit('update-config', conf).then(res => {
         this.$root.appConf = conf
       })
@@ -70,7 +72,7 @@ export default {
 </script>
 
 <style lang="scss">
-.cpt-config {
+.cpt-config-panel {
   width: 100%;
   height: 100%;
   border-radius: 4px;

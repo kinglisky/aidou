@@ -1,11 +1,10 @@
 module.exports = {
   manifest_version: 2,
-  name: 'AIDUO',
+  name: 'AIDOU',
   version: '1.0',
-  description: '斗图插件',
+  description: '方便搜索表情包并生成图片链接进行斗图',
   background: {
     scripts: [
-      'vendor.js',
       'background.js'
     ],
     persistent: true
@@ -20,13 +19,9 @@ module.exports = {
   content_scripts: [
     {
       matches: [
-        '*://github.com/*',
-        // '*://git.elenet.me/*',
-        '*://www.baidu.com/*'
-        // '*://www.google.com/*'
+        '<all_urls>'
       ],
       js: [
-        'vendor.js',
         'content.js'
       ]
     }
@@ -34,5 +29,11 @@ module.exports = {
   web_accessible_resources: [
     'content.html'
   ],
+  browser_action: {
+    default_icon: {
+      '19': 'icon.png',
+      '38': 'icon.png'
+    }
+  },
   content_security_policy: `script-src 'self' 'unsafe-eval'; object-src 'self'`
 }

@@ -2,6 +2,7 @@
   <div class="cpt-expression" @click="fetchMarkUrk">
     <img v-show="src" :src="src">
     <loading v-show="!src"></loading>
+    <span class="collect-btn icon-favorite" @click.stop="collectExpression"></span>
   </div>
 </template>
 
@@ -26,6 +27,12 @@ export default {
     exp: 'fetchImgData'
   },
 
+  computed: {
+    showFullLinks () {
+      return this.$root.appConf.showFullLinks
+    }
+  },
+
   created () {
     this.fetchImgData()
   },
@@ -46,22 +53,24 @@ export default {
         if (!url) {
           return this.picBedErrHandler(server, err)
         }
-        this.$swal({
-          content: showLinks(url),
-          buttons: false
-        })
-
-        // const mdUrl = `![](${url})`
-        // copy(mdUrl, ok => {
-        //   if (!ok) return
-        //   this.$swal({
-        //     title: '复制成功',
-        //     text: mdUrl,
-        //     icon: 'success',
-        //     buttons: false,
-        //     timer: 2000
-        //   })
-        // })
+        if (this.showFullLinks) {
+          this.$swal({
+            content: showLinks(url),
+            buttons: false
+          })
+        } else {
+          const mdUrl = `![](${url})`
+          copy(mdUrl, ok => {
+            if (!ok) return
+            this.$swal({
+              title: '复制成功',
+              text: mdUrl.slice(0, 30) + '......',
+              icon: 'success',
+              buttons: false,
+              timer: 2000
+            })
+          })
+        }
       })
     },
 
@@ -82,6 +91,13 @@ export default {
           buttons: true
         })
       }
+    },
+
+    collectExpression () {
+      const { exp } = this
+      crun.$emit('collect-expression', exp).then(res => {
+        console.log('收藏成功')
+      })
     }
   },
 
@@ -98,6 +114,7 @@ export default {
   width: 200px;
   height: 200px;
   padding: 10px;
+  border: 1px solid #eee;
   margin: 20px 0;
 
   cursor: pointer;
@@ -106,6 +123,27 @@ export default {
     display: block;
     width: 100%;
     height: 100%;
+  }
+
+  .collect-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .1);
+    background: rgba(0, 0, 0, .3);
+    color: #eee;
+    font-size: 24px;
+    opacity: 0;
+    transition: opacity .2 ease-in-out;
+  }
+
+  &:hover {
+    .collect-btn {
+      opacity: 1;
+    }
   }
 }
 </style>

@@ -1,6 +1,6 @@
 const path = require('path')
-const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+
 function assetsPath (_path) {
   return path.posix.join('static', _path)
 }
@@ -12,7 +12,7 @@ module.exports = {
     background: './src/background/index.js'
   },
   output: {
-    path: path.resolve(__dirname, './dev'),
+    path: path.resolve(__dirname, './extension'),
     filename: '[name].js',
     chunkFilename: '[name].js'
   },
@@ -94,14 +94,10 @@ module.exports = {
   },
   devtool: '#eval-source-map',
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      chunks: ['main']
-    }),
     new HtmlWebpackPlugin({
       filename: 'content.html',
       template: './src/content/index.html',
-      chunks: ['vendor', 'main'],
+      chunks: ['main'],
       inject: true
     })
   ]

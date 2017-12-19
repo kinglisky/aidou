@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'aidou';
   src:
-    url('fonts/aidou.ttf?m4cnfq') format('truetype'),
-    url('fonts/aidou.woff?m4cnfq') format('woff'),
-    url('fonts/aidou.svg?m4cnfq#aidou') format('svg');
+    url('fonts/aidou.ttf?4a1txy') format('truetype'),
+    url('fonts/aidou.woff?4a1txy') format('woff'),
+    url('fonts/aidou.svg?4a1txy#aidou') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -23,21 +23,24 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-settings:before {
-  content: "\e902";
-}
-.icon-refresh:before {
-  content: "\e901";
-}
-.icon-shuffle:before {
+.icon-favorite:before {
   content: "\e900";
 }
-.icon-search:before {
-  content: "\e904";
+.icon-shuffle:before {
+  content: "\e901";
 }
-.icon-close:before {
-  content: "\e905";
+.icon-refresh:before {
+  content: "\e902";
+}
+.icon-settings:before {
+  content: "\e903";
 }
 .icon-favorite_border:before {
-  content: "\e903";
+  content: "\e904";
+}
+.icon-search:before {
+  content: "\e905";
+}
+.icon-close:before {
+  content: "\e906";
 }

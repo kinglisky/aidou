@@ -8,6 +8,7 @@ import {
   fetchImgToBase64
 } from './util'
 
+let VISIBLE = false
 let CONFIG = merge(config)
 
 function initConfig () {
@@ -16,24 +17,17 @@ function initConfig () {
     crun.$emit('update-config', CONFIG, true)
   })
 }
-
 initConfig()
-
 cstore.update(initConfig)
 
 // 点击窗口图标打开窗口
 chrome.browserAction.onClicked.addListener(tab => {
-  crun.$emit('show-app', true, true)
+  crun.$emit('show-app', !VISIBLE, true)
 })
 
-// 打开配置页面
-// crun.$on('open-option-page', (params, cb) => {
-//   chrome.windows.create({
-//     url: 'options.html',
-//     focused: true,
-//     type: 'normal'
-//   })
-// })
+crun.$on('sync-visible', (visible, cb) => {
+  VISIBLE = visible
+})
 
 crun.$on('fetch-expression', (params, cb) => {
   QueryEngine.sogou(params).then(cb)

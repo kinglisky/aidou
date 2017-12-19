@@ -4,8 +4,11 @@
   "description": "chrome plugin",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack -w --config webpack.base.config.js",
-    "build": "webpack --config webpack.prod.config.js"
+    "clear": "rm -rf extension",
+    "config": "cross-env BUILD_ENV=prod node buildManifest.js",
+    "dev": "cross-env BUILD_ENV=dev node buildManifest.js && webpack -w --config webpack.dev.config.js",
+    "build": "cross-env BUILD_ENV=prod node buildManifest.js && webpack --config webpack.prod.config.js",
+    "pack": "zip -q -r extension.zip extension"
   },
   "repository": {
     "type": "git",
@@ -22,7 +25,7 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
     "babel-preset-stage-3": "^6.24.1",
-    "copy-webpack-plugin": "^4.2.3",
+    "copy-webpack-plugin": "^4.3.0",
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",

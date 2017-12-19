@@ -11,7 +11,7 @@ const app = new Vue({
   el: '#app',
   data () {
     return {
-      appConf: Object.assign({}, config)
+      appConf: null
     }
   },
   render: h => h(App)
@@ -19,6 +19,5 @@ const app = new Vue({
 
 // 将配置放在根实例上，用于共享组件内部恭喜
 crun.$emit('get-config', config).then(conf => {
-  console.log('ass', conf)
   app.appConf = conf
 })
