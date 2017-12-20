@@ -4,6 +4,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 base.plugins = (base.plugins || []).concat([
   new CopyWebpackPlugin([
     {
+      from: 'manifest/dev.json',
+      to: 'manifest.json'
+    },
+    {
       from: 'static/hot-reload.js',
       to: 'hot-reload.js'
     },

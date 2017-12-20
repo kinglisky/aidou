@@ -5,10 +5,8 @@
   "main": "index.js",
   "scripts": {
     "clear": "rm -rf extension",
-    "config": "cross-env BUILD_ENV=prod node buildManifest.js",
-    "dev": "cross-env BUILD_ENV=dev node buildManifest.js && webpack -w --config webpack.dev.config.js",
-    "build": "cross-env BUILD_ENV=prod node buildManifest.js && webpack --config webpack.prod.config.js",
-    "pack": "zip -q -r extension.zip extension"
+    "dev": "webpack -w --config webpack.dev.config.js",
+    "build": "webpack --config webpack.prod.config.js && zip -q -r extension.zip extension"
   },
   "repository": {
     "type": "git",

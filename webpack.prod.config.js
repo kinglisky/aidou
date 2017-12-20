@@ -20,6 +20,10 @@ base.plugins = (base.plugins || []).concat([
   }),
   new CopyWebpackPlugin([
     {
+      from: 'manifest/prod.json',
+      to: 'manifest.json'
+    },
+    {
       from: 'static/icon.png',
       to: 'icon.png'
     }
