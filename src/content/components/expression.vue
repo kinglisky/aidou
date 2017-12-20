@@ -2,7 +2,10 @@
   <div class="cpt-expression" @click="fetchMarkUrk">
     <img v-show="src" :src="src">
     <loading v-show="!src"></loading>
-    <span class="collect-btn icon-favorite" @click.stop="collectExpression"></span>
+    <span
+      class="collect-btn icon-favorite"
+      @click.stop="updateExpression">
+    </span>
   </div>
 </template>
 
@@ -93,7 +96,7 @@ export default {
       }
     },
 
-    collectExpression () {
+    updateExpression () {
       const { exp } = this
       crun.$emit('collect-expression', exp).then(res => {
         console.log('收藏成功')
@@ -114,10 +117,12 @@ export default {
   width: 200px;
   height: 200px;
   padding: 10px;
-  border: 1px solid #eee;
+  border: 1px solid #efefef;
   margin: 20px 0;
+  background: #fff;
 
   cursor: pointer;
+  transition: all .2s ease-in;
 
   img {
     display: block;
@@ -129,15 +134,21 @@ export default {
     position: absolute;
     top: 0;
     right: 0;
-    padding: 10px;
-    border-radius: 4px;
+    padding: 6px;
+    border-radius: 2px;
     margin: 10px;
+    border: 1px solid #eee;
     box-shadow: 0 0 8px rgba(0, 0, 0, .1);
-    background: rgba(0, 0, 0, .3);
-    color: #eee;
-    font-size: 24px;
+    background: #fff;
+    color: #aaa;
+    font-size: 20px;
     opacity: 0;
-    transition: opacity .2 ease-in-out;
+
+    transition: all .2s ease-in-out;
+
+    &:hover {
+      color: #f2385a;
+    }
   }
 
   &:hover {

@@ -13,6 +13,17 @@ export default {
     })
   },
 
+  sync (query, fn) {
+    chrome.storage.sync.get(query, res => {
+      fn(res[query])
+    })
+    chrome.storage.onChanged.addListener(data => {
+      if (data[query]) {
+        fn(data[query].newValue)
+      }
+    })
+  },
+
   update (fn) {
     chrome.storage.onChanged.addListener(fn)
   }

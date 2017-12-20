@@ -19,12 +19,20 @@ export default {
   },
   data () {
     return {
-      data: [],
-      total: 0
+      collectData: {}
     }
   },
 
   computed: {
+    data () {
+      const { collectData } = this
+      return Object.keys(collectData).map(link => {
+        return {
+          link,
+          suffix: '.jpg'
+        }
+      })
+    }
   },
 
   watch: {
@@ -32,12 +40,17 @@ export default {
   },
 
   created () {
-    
+    crun.$emit('get-collect-data').then(this.initCollectData)
+  },
+  
+  beforeDestroy () {
+    crun.$off('get-collect-data').then(this.initCollectData)
   },
 
   methods: {
-    fetchCollect () {
-
+    initCollectData (data) {
+      console.log(data)
+      this.collectData = data
     },
   },
 

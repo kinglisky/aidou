@@ -188,7 +188,7 @@ export default {
       }
 
       &:hover {
-        color: #dc602e;
+        color: #4ad9d9;
 
         .text {
           opacity: 1;
