@@ -1,5 +1,6 @@
 <template>
   <expression-list
+    mod="collect"
     :data="data"
     :total="data.length"
     :loading="false">
@@ -40,16 +41,20 @@ export default {
   },
 
   created () {
-    crun.$emit('get-collect-data').then(this.initCollectData)
+    crun.$on('collect-data-update', this.updateCollectData)
+    this.fetchCollectData()
   },
-  
+
   beforeDestroy () {
-    crun.$off('get-collect-data').then(this.initCollectData)
+    crun.$off('collect-data-update', this.updateCollectData)
   },
 
   methods: {
-    initCollectData (data) {
-      console.log(data)
+    fetchCollectData () {
+      crun.$emit('get-collect-data').then(this.updateCollectData)
+    },
+
+    updateCollectData (data) {
       this.collectData = data
     },
   },

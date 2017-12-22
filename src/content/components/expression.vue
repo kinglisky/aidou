@@ -15,6 +15,8 @@ import copy from '../util/copy'
 import Loading from './loading'
 import showLinks from './showLinks'
 
+const WEIBO_LOGIN = 'http://weibo.com/?topnav=1&mod=logo'
+
 export default {
   props: {
     exp: Object
@@ -83,12 +85,11 @@ export default {
           text: `${err}，先登录新微博后重试`,
           icon: 'warning',
           buttons: true
-          }).then(v => {
-            if (!v) return
-             window.open('http://weibo.com/?topnav=1&mod=logo')
-          })
-        } else {
-          this.$swal({
+        }).then(v => {
+          if (!v) return window.open(WEIBO_LOGIN)
+        })
+      } else {
+        this.$swal({
           text: `emmm... 图床好像挂掉了，换个图床试试`,
           icon: 'warning',
           buttons: true
@@ -98,7 +99,7 @@ export default {
 
     updateExpression () {
       const { exp } = this
-      crun.$emit('collect-expression', exp).then(res => {
+      crun.$emit('collect-expression', { exp }).then(res => {
         console.log('收藏成功')
       })
     }

@@ -1,7 +1,11 @@
 <template>
   <section class="cpt-expression-list">
     <div class="expression-wrapper" @scroll="requestExpression">
-      <expression v-for="exp in data" :key="exp.link" :exp="exp"></expression>
+      <expression
+        v-for="exp in data"
+        :key="exp.link"
+        :exp="exp" :mod="mod">
+      </expression>
     </div>
     <div class="loading-wrapper" v-show="loading">
       <loading :size="10"></loading>
@@ -37,7 +41,9 @@ export default {
       default: 0
     },
 
-    loading: Boolean
+    loading: Boolean,
+
+    mod: String
   },
 
   computed: {

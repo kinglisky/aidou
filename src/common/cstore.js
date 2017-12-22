@@ -22,9 +22,5 @@ export default {
         fn(data[query].newValue)
       }
     })
-  },
-
-  update (fn) {
-    chrome.storage.onChanged.addListener(fn)
   }
 }

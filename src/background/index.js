@@ -17,6 +17,7 @@ cstore.sync('config', conf => {
 
 cstore.sync('collectData', collectData => {
   COLLECT_DATA = collectData || {}
+  crun.$emit('collect-data-update', COLLECT_DATA, true)
 })
 
 // 点击窗口图标打开窗口
