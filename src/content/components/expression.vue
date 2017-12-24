@@ -15,6 +15,7 @@ import copy from '../util/copy'
 import bus from '../util/bus'
 import Loading from './loading'
 import showLinks from './showLinks'
+import LINK_BUILDER from '../util/linkBuilder'
 
 const WEIBO_LOGIN = 'http://weibo.com/?topnav=1&mod=logo'
 
@@ -52,6 +53,11 @@ export default {
       return this.$root.APP_CONF.showFullLinks
     },
 
+    copyLinkBuilder () {
+      const mod = this.$root.APP_CONF.copyLink
+      return LINK_BUILDER[mod] || LINK_BUILDER.url
+    },
+
     active () {
       const { exp, $root: { COLLECT_DATA } } = this
       return COLLECT_DATA[exp ? exp.link : '']
@@ -84,12 +90,12 @@ export default {
             buttons: false
           })
         } else {
-          const mdUrl = `![](${url})`
-          copy(mdUrl, ok => {
+          const copyUrl = this.copyLinkBuilder(url)
+          copy(copyUrl, ok => {
             if (!ok) return
             this.$swal({
               title: '复制成功',
-              text: mdUrl.slice(0, 30) + '......',
+              text: copyUrl.slice(0, 30) + '......',
               icon: 'success',
               buttons: false,
               timer: 2000

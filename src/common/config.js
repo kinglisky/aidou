@@ -1,4 +1,5 @@
 export default {
   showFullLinks: false,
-  picBed: 'weibo'
+  picBed: 'sm',
+  copyLink: 'markdown'
 }

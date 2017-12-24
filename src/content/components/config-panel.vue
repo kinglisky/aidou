@@ -15,11 +15,23 @@
         </div>
       </li>
       <li class="config-item">
-        <span class="config-label">生产链接：（默认使用 markdown 链接）</span>
+        <span class="config-label">显示链接面板：</span>
         <div class="config-content">
           <label>
-            <span>显示图链接面板</span>
+            <span>显示面板</span>
             <input type="checkbox" v-model="config.showFullLinks">
+          </label>
+        </div>
+      </li>
+      <li class="config-item">
+        <span class="config-label">生成链接：（显示链接面板时无效）</span>
+        <div class="config-content">
+          <label v-for="link in LINK_OPTIONS" :key="link.name">
+            <span>{{ link.name }}</span>
+            <input type="radio"
+              :value="link.value"
+              :disabled="config.showFullLinks"
+              v-model="config.copyLink">
           </label>
         </div>
       </li>
@@ -35,9 +47,29 @@ const PIC_BED = {
   WEIBO: 'weibo'
 }
 
+const LINK_OPTIONS = [
+  {
+    name: 'Markdown',
+    value: 'markdown'
+  },
+  {
+    name: '图片链接',
+    value: 'url'
+  },
+  {
+    name: 'UBB',
+    value: 'ubb'
+  },
+  {
+    name: 'IMG',
+    value: 'img'
+  }
+]
+
 export default {
   data () {
     this.PIC_BED = PIC_BED
+    this.LINK_OPTIONS = LINK_OPTIONS
     return {
       config: null
     }
@@ -97,7 +129,7 @@ export default {
     margin-right: 10px;
 
     label {
-      margin-right: 10px;
+      margin-right: 20px;
 
       span {
         margin-right: 6px;

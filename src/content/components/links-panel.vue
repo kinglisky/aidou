@@ -34,7 +34,7 @@ export default {
           value: `[IMG]${url}[/IMG]`
         },
         {
-          name: 'HTML',
+          name: 'IMG',
           value: `<img src="${url}"/>`
         }
       ]
