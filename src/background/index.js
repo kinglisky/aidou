@@ -33,7 +33,11 @@ crun.$on('sync-visible', (visible, cb) => {
 
 // 获取表情列表
 crun.$on('fetch-expression', (params, cb) => {
-  QueryEngine.sogou(params).then(cb)
+  QueryEngine.sogou.search(params).then(cb)
+})
+
+crun.$on('get-hot-words', (_, cb) => {
+  QueryEngine.sogou.hotWord().then(cb)
 })
 
 // 图片链接转为 base64

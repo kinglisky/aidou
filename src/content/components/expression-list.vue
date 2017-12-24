@@ -11,7 +11,8 @@
       <loading :size="10"></loading>
     </div>
     <div class="empyt-wrapper" v-show="showEmpyt">
-      <img src="../../assets/no-data.png">
+      <img v-if="mod === 'add'" src="../../assets/no-data.png">
+      <img v-else src="../../assets/empty-icon.png">
     </div>
   </section>
 </template>

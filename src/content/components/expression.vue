@@ -110,9 +110,10 @@ export default {
         this.$swal({
           text: `${err}，先登录新微博后重试`,
           icon: 'warning',
-          buttons: true
+          buttons: ['我不登', '好哒']
         }).then(v => {
-          if (!v) return window.open(WEIBO_LOGIN)
+          if (!v) return
+          window.open(WEIBO_LOGIN)
         })
       } else {
         this.$swal({

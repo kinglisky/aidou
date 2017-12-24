@@ -34,7 +34,7 @@ function pid2url ({ pid, ext }, type = 'large') {
 }
 
 function log () {
-  window.alert('emmm... 图传服务好像崩掉了~')
+  console.log('emmm... 图传服务好像崩掉了~')
 }
 
 export default {
@@ -68,7 +68,7 @@ export default {
             ext: '.jpg'
           })
         } else {
-          err = '微博图床未登录'
+          err = '微博图床需要登录微博'
         }
       } catch (e) {
         url = ''

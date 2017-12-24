@@ -33,6 +33,8 @@ export default {
   data () {
     return {
       keyword: '',
+      hotWord: '',
+      hotWords: [],
       tipMod: 0
     }
   },
@@ -55,12 +57,12 @@ export default {
     },
 
     btnList () {
-      const { noop, shwoCollect, showConfig, tipText } = this
+      const { shuffleSeach, shwoCollect, showConfig, tipText } = this
       return [
         {
           icon: 'icon-shuffle',
           text: '随便看看',
-          handler: noop
+          handler: shuffleSeach
         },
         {
           icon: 'icon-favorite_border',
@@ -78,6 +80,7 @@ export default {
   },
 
   created () {
+    this.fetchHoTword()
     bus.$on('update-collect-tip', this.updateCollectTip)
   },
 
@@ -93,7 +96,21 @@ export default {
       }, 600)
     },
 
-    noop () {
+    fetchHoTword () {
+      crun.$emit('get-hot-words').then(words => {
+        this.hotWords = words
+      })
+    },
+
+    shuffleSeach () {
+      const { hotWords } = this
+      const keyword = hotWords[(Math.random() * hotWords.length | 0)]
+      if (!keyword) return
+      if (this.hotWord === keyword) {
+        this.shuffleSeach()
+      }
+      this.hotWord = keyword
+      this.$emit('fetch-exp', `${keyword}&statref=home_hotword`)
     },
 
     showView (view) {
@@ -114,7 +131,8 @@ export default {
     },
 
     fetchExp () {
-      this.$emit('fetch-exp', this.keyword)
+      if (!this.keyword) return
+      this.$emit('fetch-exp', `${this.keyword} 表情`)
     }
   }
 }

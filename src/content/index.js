@@ -7,8 +7,8 @@ IFRAME.style.width = '600px'
 IFRAME.style.height = '100%'
 IFRAME.style.border = 'none'
 IFRAME.style.zIndex = 9999
-// IFRAME.style.opacity = 0
-// IFRAME.style.transform = `translate3d(100%, 0, 0)`
+IFRAME.style.opacity = 0
+IFRAME.style.transform = `translate3d(100%, 0, 0)`
 IFRAME.style.transition = 'opacity .5s ease-in-out, transform .5s ease-in-out'
 IFRAME.src = window.chrome.extension.getURL('content.html')
 
