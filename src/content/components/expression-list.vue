@@ -43,7 +43,10 @@ export default {
 
     loading: Boolean,
 
-    mod: String
+    mod: {
+      type: String,
+      default: 'add'
+    }
   },
 
   computed: {

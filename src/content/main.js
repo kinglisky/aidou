@@ -11,7 +11,8 @@ const app = new Vue({
   el: '#app',
   data () {
     return {
-      appConf: null
+      APP_CONF: null,
+      COLLECT_DATA: {}
     }
   },
   render: h => h(App)
@@ -19,5 +20,10 @@ const app = new Vue({
 
 // 将配置放在根实例上，用于共享组件内部恭喜
 crun.$emit('get-config', config).then(conf => {
-  app.appConf = conf
+  app.APP_CONF = conf
 })
+
+// 收藏图标数据
+const updateCollectData = data => { app.COLLECT_DATA = data }
+crun.$on('collect-data-update', updateCollectData)
+crun.$emit('get-collect-data').then(updateCollectData)

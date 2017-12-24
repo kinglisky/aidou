@@ -45,7 +45,7 @@ export default {
 
   computed: {
     appConf () {
-      return this.$root.appConf
+      return this.$root.APP_CONF
     }
   },
 
@@ -64,7 +64,7 @@ export default {
     updateConfig (conf) {
       if (!conf) return
       crun.$emit('update-config', conf).then(res => {
-        this.$root.appConf = conf
+        this.$root.APP_CONF = conf
       })
     }
   }

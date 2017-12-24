@@ -1,6 +1,6 @@
 <template>
   <expression-list
-    mod="collect"
+    mod="remove"
     :data="data"
     :total="data.length"
     :loading="false">
@@ -18,45 +18,14 @@ export default {
       default: ''
     },
   },
-  data () {
-    return {
-      collectData: {}
-    }
-  },
 
   computed: {
     data () {
-      const { collectData } = this
+      const collectData = this.$root.COLLECT_DATA || {}
       return Object.keys(collectData).map(link => {
-        return {
-          link,
-          suffix: '.jpg'
-        }
+        return { link, suffix: '.jpg' }
       })
     }
-  },
-
-  watch: {
-  
-  },
-
-  created () {
-    crun.$on('collect-data-update', this.updateCollectData)
-    this.fetchCollectData()
-  },
-
-  beforeDestroy () {
-    crun.$off('collect-data-update', this.updateCollectData)
-  },
-
-  methods: {
-    fetchCollectData () {
-      crun.$emit('get-collect-data').then(this.updateCollectData)
-    },
-
-    updateCollectData (data) {
-      this.collectData = data
-    },
   },
 
   components: {

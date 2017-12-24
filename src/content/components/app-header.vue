@@ -12,6 +12,7 @@
         @click="btn.handler">
         <span class="icon" :class="btn.icon"></span>
         <span class="text">{{ btn.text }}</span>
+        <span v-show="btn.tip" class="tip-text" >{{ btn.tip }}</span>
       </li>
     </ul>
   </section>
@@ -20,7 +21,7 @@
 
 <script>
 import crun from '@/common/crun'
-
+import bus from '../util/bus'
 export default {
   props: {
     view: {
@@ -31,7 +32,8 @@ export default {
 
   data () {
     return {
-      keyword: ''
+      keyword: '',
+      tipMod: 0
     }
   },
 
@@ -46,8 +48,14 @@ export default {
       }
     },
 
+    tipText () {
+      const { tipMod } = this
+      if (!tipMod) return
+      return tipMod > 0 ? '+ 1' : '- 1'
+    },
+
     btnList () {
-      const { noop, shwoCollect, showConfig} = this
+      const { noop, shwoCollect, showConfig, tipText } = this
       return [
         {
           icon: 'icon-shuffle',
@@ -57,6 +65,7 @@ export default {
         {
           icon: 'icon-favorite_border',
           text: '我的收藏',
+          tip: tipText,
           handler: shwoCollect
         },
         {
@@ -68,7 +77,22 @@ export default {
     }
   },
 
+  created () {
+    bus.$on('update-collect-tip', this.updateCollectTip)
+  },
+
+  beforeDestroy () {
+    bus.$off('update-collect-tip', this.updateCollectTip)
+  },
+
   methods: {
+    updateCollectTip (v) {
+      this.tipMod = v
+      setTimeout(() => {
+        this.tipMod = 0
+      }, 600)
+    },
+
     noop () {
     },
 
@@ -148,8 +172,6 @@ export default {
       position: relative;
       height: 100%;
       color: $main-color;
-      // display: flex;
-      // align-items: center;
 
       .icon {
         font-size: 16px;
@@ -158,21 +180,16 @@ export default {
         cursor: pointer;
       }
 
-      .text {
+      .text,
+      .tip-text {
         position: absolute;
         top: 0;
         left: 50%;
         width: 70px;
         padding: 4px 0;
         border-radius: 40px;
-        background: $main-color;
-        color: #fff;
         font-size: 10px;
         text-align: center;
-        opacity: 0;
-
-        transform: translate3d(-50%, -100%, 0);
-        transition: opacity .2s ease-in-out, transform .2s ease-in-out;
 
         &:after {
           content: "";
@@ -184,6 +201,45 @@ export default {
           border-left: 4px solid transparent;
 
           transform: translateX(-50%);
+        }
+      }
+
+      .text {
+        background: $main-color;
+        color: #fff;
+        opacity: 0;
+        transform: translate3d(-50%, -100%, 0);
+        transition: opacity .2s ease-in-out, transform .2s ease-in-out;
+      }
+
+      .tip-text {
+        background: #4ad9d9;
+        color: #fff;
+        font-size: 12px;
+        animation: popup .2s 1 linear;
+        transform: translate3d(-50%, -120%, 0);
+
+
+        &:after {
+          border-top-color: #4ad9d9;
+        }
+
+        @keyframes popup {
+          0% {
+            opacity: 0;
+
+            transform: translate3d(-50%, -100%, 0);
+          }
+
+          50% {
+            opacity: .5;
+          }
+
+          100% {
+            opacity: 1;
+
+            transform: translate3d(-50%, -120%, 0);
+          }
         }
       }
 

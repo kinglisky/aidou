@@ -2,8 +2,8 @@
   <div class="cpt-expression" @click="fetchMarkUrk">
     <img v-show="src" :src="src">
     <loading v-show="!src"></loading>
-    <span
-      class="collect-btn icon-favorite"
+    <span class="collect-btn"
+      :class="collectClass"
       @click.stop="updateExpression">
     </span>
   </div>
@@ -12,6 +12,7 @@
 <script>
 import crun from '@/common/crun'
 import copy from '../util/copy'
+import bus from '../util/bus'
 import Loading from './loading'
 import showLinks from './showLinks'
 
@@ -19,7 +20,12 @@ const WEIBO_LOGIN = 'http://weibo.com/?topnav=1&mod=logo'
 
 export default {
   props: {
-    exp: Object
+    exp: Object,
+  
+    mod: {
+      type: String,
+      default: 'add'
+    }
   },
 
   data () {
@@ -33,8 +39,22 @@ export default {
   },
 
   computed: {
+    collectClass () {
+      const { mod, active } = this
+      return {
+        'active': mod === 'add' && active,
+        'icon-favorite': mod === 'add',
+        'icon-delete_forever': mod === 'remove'
+      }
+    },
+
     showFullLinks () {
-      return this.$root.appConf.showFullLinks
+      return this.$root.APP_CONF.showFullLinks
+    },
+
+    active () {
+      const { exp, $root: { COLLECT_DATA } } = this
+      return COLLECT_DATA[exp ? exp.link : '']
     }
   },
 
@@ -98,10 +118,27 @@ export default {
     },
 
     updateExpression () {
+      const { mod } = this
+      if (mod === 'add') {
+        this.addExpression()
+      } else {
+        this.removeExpression()
+      }
+    },
+
+    addExpression () {
       const { exp } = this
-      crun.$emit('collect-expression', { exp }).then(res => {
-        console.log('收藏成功')
-      })
+      crun.$emit('add-collect-expression', exp).then(this.updateCollectTip)
+    },
+
+    removeExpression () {
+      const { exp } = this
+      crun.$emit('remove-collect-expression', exp).then(this.updateCollectTip)
+    },
+
+    updateCollectTip () {
+      const v = this.mod === 'add' ? 1 : -1
+      bus.$emit('update-collect-tip', v)
     }
   },
 
@@ -136,9 +173,9 @@ export default {
     top: 0;
     right: 0;
     padding: 6px;
+    border: 1px solid #eee;
     border-radius: 2px;
     margin: 10px;
-    border: 1px solid #eee;
     box-shadow: 0 0 8px rgba(0, 0, 0, .1);
     background: #fff;
     color: #aaa;
@@ -147,8 +184,9 @@ export default {
 
     transition: all .2s ease-in-out;
 
-    &:hover {
-      color: #f2385a;
+    &:hover,
+    &.active {
+      color: #4ad9d9;
     }
   }
 

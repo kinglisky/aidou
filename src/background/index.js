@@ -46,17 +46,30 @@ crun.$on('uniform-url', (base64, cb) => {
   PicBed[CONFIG.picBed](base64).then(cb)
 })
 
+// 获取配置信息
 crun.$on('get-config', (config, cb) => {
   cstore.get({ config }).then(res => cb(res.config))
 })
 
+// 更新配置信息
 crun.$on('update-config', (config, cb) => {
   cstore.set({ config }).then(res => cb(config))
 })
 
-crun.$on('collect-expression', (exp, cb) => {
+// 收藏相关
+crun.$on('add-collect-expression', (exp, cb) => {
   const date = COLLECT_DATA[exp.link] = Date.now()
-  cstore.set({ collectData: COLLECT_DATA }).then(() => cb(date))
+  cstore.set({
+    collectData: COLLECT_DATA
+  }).then(() => cb(date))
+})
+
+crun.$on('remove-collect-expression', (exp, cb) => {
+  const date = COLLECT_DATA[exp.link]
+  delete COLLECT_DATA[exp.link]
+  cstore.set({
+    collectData: COLLECT_DATA
+  }).then(() => cb(date))
 })
 
 crun.$on('get-collect-data', (_, cb) => {
