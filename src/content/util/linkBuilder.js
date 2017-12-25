@@ -1,6 +1,14 @@
 export default {
-  url: url => url,
-  ubb: url => `[IMG]${url}[/IMG]`,
-  img: url => `<img src="${url}"/>`,
-  makrdown: url => `![](${url})`
+  url (url) {
+    return url
+  },
+  ubb (url) {
+    return `[IMG]${url}[/IMG]`
+  },
+  img (url) {
+    return `<img src="${url}"/>`
+  },
+  markdown (url) {
+    return `![](${url})`
+  }
 }

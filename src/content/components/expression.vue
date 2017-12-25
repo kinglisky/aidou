@@ -53,9 +53,8 @@ export default {
       return this.$root.APP_CONF.showFullLinks
     },
 
-    copyLinkBuilder () {
-      const mod = this.$root.APP_CONF.copyLink
-      return LINK_BUILDER[mod] || LINK_BUILDER.url
+    copyMod () {
+      return this.$root.APP_CONF.copyLink || 'markdown'
     },
 
     active () {
@@ -90,7 +89,8 @@ export default {
             buttons: false
           })
         } else {
-          const copyUrl = this.copyLinkBuilder(url)
+          const copyLinkBuilder = LINK_BUILDER[this.copyMod]
+          const copyUrl = copyLinkBuilder(url)
           copy(copyUrl, ok => {
             if (!ok) return
             this.$swal({
