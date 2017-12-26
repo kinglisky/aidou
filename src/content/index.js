@@ -11,8 +11,11 @@ IFRAME.style.opacity = 0
 IFRAME.style.transform = `translate3d(100%, 0, 0)`
 IFRAME.style.transition = 'opacity .5s ease-in-out, transform .5s ease-in-out'
 IFRAME.src = window.chrome.extension.getURL('content.html')
+document.body.appendChild(IFRAME)
 
+// 控制窗口显示隐藏
 let visible = false
+
 function showApp () {
   visible = true
   IFRAME.style.opacity = 1
@@ -26,8 +29,6 @@ function hiddenApp () {
   IFRAME.style.transform = `translate3d(100%, 0, 0)`
   chrome.runtime.sendMessage({ event: 'sync-visible', params: false })
 }
-
-document.body.appendChild(IFRAME)
 
 let mouseented = false
 IFRAME.addEventListener('mouseenter', event => {
@@ -52,13 +53,44 @@ window.addEventListener('message', event => {
   }
 })
 
-document.addEventListener('keydown', function (event) {
-  const { metaKey, shiftKey, key } = event
-  if (metaKey && shiftKey && key === '\\') {
-    if (visible) {
-      hiddenApp()
-    } else {
-      showApp()
-    }
+// 一些快捷键配置
+let config = {
+  shortcut: {
+    specialKeys: ['metaKey', 'shiftKey'],
+    key: '\\'
   }
+}
+
+chrome.runtime.sendMessage({
+  event: 'get-config',
+  params: config
+}, conf => { config = conf })
+
+chrome.runtime.onMessage.addListener(({ event, params }) => {
+  if (event === 'update-config') {
+    config = params
+  }
+})
+
+let kbTimer = null
+document.addEventListener('keydown', function (event) {
+  if (kbTimer) {
+    clearTimeout(kbTimer)
+    kbTimer = null
+    return
+  }
+  kbTimer = setTimeout(() => {
+    const { specialKeys = [], key = '', code = '' } = config.shortcut
+    if (
+      specialKeys.every(k => event[k]) &&
+      ((code && code === event.code) || (key && key === event.key))
+    ) {
+      if (visible) {
+        hiddenApp()
+      } else {
+        showApp()
+      }
+    }
+    kbTimer = null
+  }, 200)
 })

@@ -35,6 +35,21 @@
           </label>
         </div>
       </li>
+      <li class="config-item">
+        <span class="config-label">快捷键设置：{{ shortcutInfo }}</span>
+        <div class="config-content shortcut-config">
+          <label v-for="kb in KB_KEYS" :key="kb.name">
+            <span>{{ kb.name }}</span>
+            <input type="checkbox" :value="kb.value"
+              v-model="config.shortcut.specialKeys">
+          </label>
+          <span class="add-text">+</span>
+          <input type="text"
+            class="shortcut-key"
+            v-model="config.shortcut.key"
+            @keydown="setShortcutCode">
+        </div>
+      </li>
     </ul>
   </section>
 </template>
@@ -66,9 +81,41 @@ const LINK_OPTIONS = [
   }
 ]
 
+const DEFAULT_SHORTCUT = {
+
+}
+
+const KB_KEYS = [
+  {
+    name: 'CMD/WIN',
+    value: 'metaKey'
+  },
+  {
+    name: 'CTRL',
+    value: 'ctrlKey'
+  },
+  {
+    name: 'OPT/ALT',
+    value: 'altKey'
+  },
+  {
+    name: 'SHIFT',
+    value: 'shiftKey'
+  }
+]
+
+const KB_KEYS_MAP = KB_KEYS.reduce((map, curr, i) => {
+  map[curr.value] = {
+    name: curr.name,
+    index: i
+  }
+  return map
+}, {})
+
 export default {
   data () {
     this.PIC_BED = PIC_BED
+    this.KB_KEYS = KB_KEYS
     this.LINK_OPTIONS = LINK_OPTIONS
     return {
       config: null
@@ -78,6 +125,18 @@ export default {
   computed: {
     appConf () {
       return this.$root.APP_CONF
+    },
+  
+    shortcutInfo () {
+      const { config } = this
+      if (!config) return ''
+      const { specialKeys = [], key = '' } = config.shortcut || {}
+      if (!specialKeys.length) return ''
+      const head = specialKeys
+        .map(key => KB_KEYS_MAP[key])
+        .sort((a, b) => a.index - b.index)
+        .map(it => it.name).join(' + ')
+      return `${head} + ${String(key).toUpperCase()}`
     }
   },
 
@@ -98,6 +157,10 @@ export default {
       crun.$emit('update-config', conf).then(res => {
         this.$root.APP_CONF = conf
       })
+    },
+
+    setShortcutCode (event) {
+      this.config.shortcut.code = event.code
     }
   }
 }
@@ -116,8 +179,8 @@ export default {
   }
 
   .config-item {
-    border-bottom: 1px dotted #eee;
     padding: 20px 0;
+    border-bottom: 1px dotted #eee;
   }
 
   .config-label {
@@ -136,6 +199,57 @@ export default {
         color: #929aa3;
       }
     }
+  }
+
+  .shortcut-config {
+    label {
+      margin-right: 14px;
+
+      span {
+        margin-right: 2px;
+        color: #929aa3;
+      }
+
+      &:last-child {
+         margin-right: 0;
+      }
+    }
+
+    .add-text {
+      margin-right: 14px;
+      font-weight: bolder;
+    }
+
+    .shortcut-key {
+      display: inline-block;
+      width: 60px;
+      padding: 4px 8px;
+      border: 1px solid #eee;
+      border-radius: 4px;
+      outline: none;
+      color: #929aa3;
+    }
+
+    // .btn {
+    //   padding: 4px 8px;
+    //   border: none;
+    //   border-radius: 4px;
+    //   color: #fff;
+    //   outline: none;
+    //   transition: opacity .2s;
+
+    //   &.confirm {
+    //     background: #4ad9d9;
+    //   }
+
+    //   &.cancel {
+    //     background: #ccc;
+    //   }
+
+    //   &:hover {
+    //     opacity: .8;
+    //   }
+    // }
   }
 }
 </style>

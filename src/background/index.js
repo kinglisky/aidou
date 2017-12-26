@@ -13,6 +13,7 @@ let COLLECT_DATA = {}
 
 cstore.sync('config', conf => {
   CONFIG = conf || merge(config)
+  crun.$emit('update-config', CONFIG, true)
 })
 
 cstore.sync('collectData', collectData => {

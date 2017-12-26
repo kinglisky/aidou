@@ -1,5 +1,10 @@
 export default {
   showFullLinks: false,
   picBed: 'sm',
-  copyLink: 'markdown'
+  copyLink: 'markdown',
+  shortcut: {
+    specialKeys: ['metaKey', 'shiftKey'],
+    key: '\\',
+    code: 'Backslash'
+  }
 }
