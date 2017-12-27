@@ -81,10 +81,6 @@ const LINK_OPTIONS = [
   }
 ]
 
-const DEFAULT_SHORTCUT = {
-
-}
-
 const KB_KEYS = [
   {
     name: 'CMD/WIN',
@@ -148,6 +144,12 @@ export default {
     config: {
       deep: true,
       handler: 'updateConfig'
+    },
+
+    'config.shortcut.key' (nv) {
+      if (nv) {
+        this.config.shortcut.key = nv.slice(0, 1)
+      }
     }
   },
 

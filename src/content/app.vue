@@ -1,11 +1,24 @@
 <template>
   <section id="chrome-extension-aidou">
     <app-header @fetch-exp="fetchExp" :view.sync="currView"></app-header>
-    <div class="app-wrapper">
-      <search-panel class="view" v-show="view.search" :query="query"></search-panel>
-      <collect-panel class="view" v-show="view.collect"></collect-panel>
-      <config-panel class="view" v-show="view.config"></config-panel>
-    </div>
+    <transition-group name="panels" tag="div" class="app-wrapper">
+      <search-panel
+        class="view"
+        key="search"
+        :query="query"
+        v-show="view.search">
+      </search-panel>
+      <collect-panel
+        class="view"
+        key="collect"
+        v-show="view.collect">
+      </collect-panel>
+      <config-panel
+        class="view"
+        key="config"
+        v-show="view.config">
+      </config-panel>
+    </transition-group>
     <span class="icon-close close-btn" @click="toggleView(false)"></span>
   </section>
 </template>
@@ -89,11 +102,22 @@ body {
 
     .view {
       position: absolute;
-      width: 100%;
-      height: 100%;
       top: 0;
       left: 0;
+      width: 100%;
+      height: 100%;
+      background: #fff;
     }
+  }
+
+  .panels-enter-active,
+  .panels-leave-active {
+    transition: opacity .8s, transform .8s;
+  }
+  .panels-enter,
+  .panels-leave-to {
+    opacity: 0;
+    transform: translateY(10px);
   }
 
   .close-btn {
@@ -108,7 +132,7 @@ body {
     transition: color .2s ease-in;
 
     &:hover {
-      color: #55b559;
+      color: #4ad9d9;
     }
   }
 }
