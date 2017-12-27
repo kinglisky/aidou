@@ -57,12 +57,12 @@ export default {
     },
 
     btnList () {
-      const { shuffleSeach, shwoCollect, showConfig, tipText } = this
+      const { shuffleSearch, shwoCollect, showConfig, tipText } = this
       return [
         {
           icon: 'icon-shuffle',
           text: '随便看看',
-          handler: shuffleSeach
+          handler: shuffleSearch
         },
         {
           icon: 'icon-favorite_border',
@@ -102,13 +102,14 @@ export default {
       })
     },
 
-    shuffleSeach () {
+    shuffleSearch () {
       const { hotWords } = this
       const keyword = hotWords[(Math.random() * hotWords.length | 0)]
       if (!keyword) return
       if (this.hotWord === keyword) {
-        this.shuffleSeach()
+        this.shuffleSearch()
       }
+      this.syncView = 'search'
       this.hotWord = keyword
       this.$emit('fetch-exp', `${keyword}&statref=home_hotword`)
     },
