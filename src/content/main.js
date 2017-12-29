@@ -12,7 +12,8 @@ const APP = new Vue({
   data () {
     return {
       APP_CONF: null,
-      COLLECT_DATA: {}
+      COLLECT_DATA: {},
+      HOSTNAME: window.location.search.replace('?hostname=', '')
     }
   },
   render: h => h(App)
@@ -26,3 +27,6 @@ crun.$emit('fetch-config', config).then(updateConfig)
 const updateCollectData = data => { APP.COLLECT_DATA = data }
 crun.$emit('fetch-collect-data').then(updateCollectData)
 crun.$on('update-collect-data', updateCollectData)
+
+// 处理错误
+crun.$on('err', msg => { swal('( *・ω・)✄╰ひ╯', msg, 'error') })

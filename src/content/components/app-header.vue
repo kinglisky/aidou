@@ -7,8 +7,10 @@
         @focus="showView('search')">
     </div>
     <ul class="oper-btns">
-      <li v-for="btn in btnList"
-        :key="btn.text" class="btn" 
+      <li class="btn" 
+        v-for="btn in btnList"
+        :key="btn.text"
+        :class="btn.class"
         @click="btn.handler">
         <span class="icon" :class="btn.icon"></span>
         <span class="text">{{ btn.text }}</span>
@@ -21,6 +23,7 @@
 
 <script>
 import crun from '@/common/crun'
+import HOT_WORDS from '@/common/hotWords.js'
 import bus from '../util/bus'
 export default {
   props: {
@@ -31,10 +34,10 @@ export default {
   },
 
   data () {
+    this.hotWords = HOT_WORDS
     return {
       keyword: '',
       hotWord: '',
-      hotWords: [],
       tipMod: 0
     }
   },
@@ -57,7 +60,7 @@ export default {
     },
 
     btnList () {
-      const { shuffleSearch, shwoCollect, showConfig, tipText } = this
+      const { shuffleSearch, shwoCollect, showConfig, tipText, view } = this
       return [
         {
           icon: 'icon-shuffle',
@@ -68,11 +71,13 @@ export default {
           icon: 'icon-favorite_border',
           text: '我的收藏',
           tip: tipText,
+          class: { active: view === 'collect' },
           handler: shwoCollect
         },
         {
           icon: 'icon-settings',
           text: '设置',
+          class: { active: view === 'config' },
           handler: showConfig
         }
       ]
@@ -80,7 +85,6 @@ export default {
   },
 
   created () {
-    this.fetchHoTword()
     bus.$on('update-collect-tip', this.updateCollectTip)
   },
 
@@ -96,22 +100,16 @@ export default {
       }, 600)
     },
 
-    fetchHoTword () {
-      crun.$emit('get-hot-words').then(words => {
-        this.hotWords = words
-      })
-    },
-
     shuffleSearch () {
       const { hotWords } = this
       const keyword = hotWords[(Math.random() * hotWords.length | 0)]
       if (!keyword) return
-      if (this.hotWord === keyword) {
-        this.shuffleSearch()
+      if (this.keyword === keyword) {
+        return this.shuffleSearch()
       }
       this.syncView = 'search'
-      this.hotWord = keyword
-      this.$emit('fetch-exp', `${keyword}&statref=home_hotword`)
+      this.keyword = keyword
+      this.$emit('fetch-exp', `${this.keyword} 表情`)
     },
 
     showView (view) {
@@ -132,7 +130,9 @@ export default {
     },
 
     fetchExp () {
-      if (!this.keyword) return
+      if (!this.keyword) {
+        return this.shuffleSearch()
+      }
       this.$emit('fetch-exp', `${this.keyword} 表情`)
     }
   }
@@ -227,6 +227,7 @@ export default {
         background: $main-color;
         color: #fff;
         opacity: 0;
+
         transform: translate3d(-50%, -100%, 0);
         transition: opacity .2s ease-in-out, transform .2s ease-in-out;
       }
@@ -235,6 +236,7 @@ export default {
         background: #4ad9d9;
         color: #fff;
         font-size: 12px;
+
         animation: popup .2s 1 linear;
         transform: translate3d(-50%, -120%, 0);
 
@@ -262,17 +264,16 @@ export default {
         }
       }
 
+      &.active,
       &:hover {
         color: #4ad9d9;
+      }
 
-        .text {
-          opacity: 1;
-
-          transform: translate3d(-50%, -120%, 0);
-        }
+      &:hover.text {
+        opacity: 1;
+        transform: translate3d(-50%, -120%, 0);
       }
     }
   }
 }
 </style>
-

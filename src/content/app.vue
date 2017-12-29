@@ -81,6 +81,39 @@ body {
   font-size: 12px;
 }
 
+ul {
+  list-style: none;
+}
+
+.common-input {
+  padding: 4px 8px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  outline: none;
+}
+
+.common-btn {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  transition: opacity .2s;
+
+  &.confirm {
+    color: #fff;
+    background: #4ad9d9;
+  }
+
+  &.cancel {
+    background: #ccc;
+  }
+
+  &:hover {
+    opacity: .8;
+  }
+}
+
 #chrome-extension-aidou {
   position: relative;
   z-index: 100;
@@ -117,6 +150,7 @@ body {
   .panels-enter,
   .panels-leave-to {
     opacity: 0;
+
     transform: translateY(10px);
   }
 

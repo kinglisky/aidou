@@ -13,4 +13,3 @@ export default function showLinks (url) {
   }
   return ins.$el
 }
-

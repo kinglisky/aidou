@@ -2,19 +2,6 @@
   <section class="cpt-config-panel">
     <ul class="config-panel" v-if="config">
       <li class="config-item">
-        <span class="config-label">图床服务：</span>
-        <div class="config-content">
-          <label>
-            <span>微博图床</span>
-            <input type="radio" :value="PIC_BED.WEIBO" v-model="config.picBed">
-          </label>
-          <label>
-            <span>SM 图床</span>
-            <input type="radio" :value="PIC_BED.SM" v-model="config.picBed">
-          </label>
-        </div>
-      </li>
-      <li class="config-item">
         <span class="config-label">显示链接面板：</span>
         <div class="config-content">
           <label>
@@ -24,7 +11,7 @@
         </div>
       </li>
       <li class="config-item">
-        <span class="config-label">生成链接：（显示链接面板时无效）</span>
+        <span class="config-label">默认链接：【 显示链接面板时无效 】</span>
         <div class="config-content">
           <label v-for="link in LINK_OPTIONS" :key="link.name">
             <span>{{ link.name }}</span>
@@ -36,7 +23,7 @@
         </div>
       </li>
       <li class="config-item">
-        <span class="config-label">快捷键设置：{{ shortcutInfo }}</span>
+        <span class="config-label">快捷键设置：【 {{ shortcutInfo }} 】</span>
         <div class="config-content shortcut-config">
           <label v-for="kb in KB_KEYS" :key="kb.name">
             <span>{{ kb.name }}</span>
@@ -45,9 +32,31 @@
           </label>
           <span class="add-text">+</span>
           <input type="text"
-            class="shortcut-key"
+            class="common-input shortcut-key"
             v-model="config.shortcut.key"
             @keydown="setShortcutCode">
+        </div>
+      </li>
+       <li class="config-item">
+        <span class="config-label">图床服务：【 微博图床需要登录微博使用 】</span>
+        <div class="config-content">
+          <label>
+            <span>SM 图床</span>
+            <input type="radio" :value="PIC_BED.SM" v-model="config.picBed">
+          </label>
+          <label>
+            <span>微博图床</span>
+            <input type="radio" :value="PIC_BED.WEIBO" v-model="config.picBed">
+          </label>
+        </div>
+      </li>
+      <li class="config-item">
+        <span class="config-label">图床转换：【 有些网站不能直接粘贴表情地址，需要图床转换一下 】</span>
+        <div class="config-content transform-config">
+           <input type="text" class="common-input"
+            v-model.trim="config.transformUrl"
+            placeholder="多个 URL 地址请用 , 符号进行分隔">
+           <button class="common-btn confirm" @click="addTransformUrl">添加当前网址</button>
         </div>
       </li>
     </ul>
@@ -108,6 +117,8 @@ const KB_KEYS_MAP = KB_KEYS.reduce((map, curr, i) => {
   return map
 }, {})
 
+const URL_MATCH = /https?:\/\/(.*?)\/.*/
+
 export default {
   data () {
     this.PIC_BED = PIC_BED
@@ -133,6 +144,11 @@ export default {
         .sort((a, b) => a.index - b.index)
         .map(it => it.name).join(' + ')
       return `${head} + ${String(key).toUpperCase()}`
+    },
+
+    transformUrlList () {
+      const { transformUrl = '' } = this.config || {}
+      return transformUrl.split(/，|；|,|;/)
     }
   },
 
@@ -144,6 +160,12 @@ export default {
     config: {
       deep: true,
       handler: 'updateConfig'
+    },
+
+    transformUrlList (list) {
+      this.config.transformUrl = list.map(url => {
+        return url.replace(URL_MATCH, '$1')
+      }).join(',')
     },
 
     'config.shortcut.key' (nv) {
@@ -163,18 +185,27 @@ export default {
 
     setShortcutCode (event) {
       this.config.shortcut.code = event.code
+    },
+
+    addTransformUrl () {
+      const { $root: { HOSTNAME }, transformUrlList } = this
+      const { transformUrl = '' } = this.config || {}
+      if (~transformUrlList.indexOf(HOSTNAME)) return
+      this.config.transformUrl = transformUrl
+        ? `${HOSTNAME},${transformUrl}`
+        : HOSTNAME
     }
   }
 }
 </script>
 
 <style lang="scss">
+$font-color: #929aa3;
 .cpt-config-panel {
   width: 100%;
   height: 100%;
   border-radius: 4px;
   color: #3e5165;
-  font-weight: 200;
 
   .config-panel {
     list-style: none;
@@ -188,6 +219,7 @@ export default {
   .config-label {
     display: block;
     margin: 10px 0;
+    color: #777;
   }
 
   .config-content {
@@ -198,7 +230,7 @@ export default {
 
       span {
         margin-right: 6px;
-        color: #929aa3;
+        color: $font-color;
       }
     }
   }
@@ -209,11 +241,11 @@ export default {
 
       span {
         margin-right: 2px;
-        color: #929aa3;
+        color: $font-color;
       }
 
       &:last-child {
-         margin-right: 0;
+        margin-right: 0;
       }
     }
 
@@ -225,33 +257,24 @@ export default {
     .shortcut-key {
       display: inline-block;
       width: 60px;
-      padding: 4px 8px;
-      border: 1px solid #eee;
-      border-radius: 4px;
-      outline: none;
-      color: #929aa3;
+      color: $font-color;
     }
+  }
 
-    // .btn {
-    //   padding: 4px 8px;
-    //   border: none;
-    //   border-radius: 4px;
-    //   color: #fff;
-    //   outline: none;
-    //   transition: opacity .2s;
+  .transform-config {
+    display: flex;
+    align-items: center;
 
-    //   &.confirm {
-    //     background: #4ad9d9;
-    //   }
-
-    //   &.cancel {
-    //     background: #ccc;
-    //   }
-
-    //   &:hover {
-    //     opacity: .8;
-    //   }
-    // }
+    input {
+      flex: 1;
+      margin-right: 6px;
+      color: $font-color;
+      &::-webkit-input-placeholder {
+        color: #ccc;
+        font-size: 10px;;
+        font-weight: 200;
+      }
+    }
   }
 }
 </style>

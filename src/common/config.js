@@ -6,5 +6,6 @@ export default {
     specialKeys: ['metaKey', 'shiftKey'],
     key: '\\',
     code: 'Backslash'
-  }
+  },
+  transformUrl: 'github.com'
 }

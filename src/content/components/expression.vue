@@ -1,5 +1,5 @@
 <template>
-  <div class="cpt-expression" @click="fetchMarkUrk">
+  <div class="cpt-expression" @click="buildMarkLink">
     <img v-show="src" :src="src">
     <loading v-show="!src"></loading>
     <span class="collect-btn"
@@ -57,6 +57,11 @@ export default {
       return this.$root.APP_CONF.copyLink || 'markdown'
     },
 
+    usePicBed () {
+      const { APP_CONF: { transformUrl }, HOSTNAME } = this.$root
+      return ~(transformUrl || '').split(',').indexOf(HOSTNAME)
+    },
+
     active () {
       const { exp, $root: { COLLECT_DATA } } = this
       return COLLECT_DATA[exp ? exp.link : '']
@@ -76,33 +81,52 @@ export default {
       })
     },
 
-    fetchMarkUrk () {
-      if (!this.src) return
-      this.$swal('生成图床链接中......', { button: false })
-      crun.$emit('uniform-url', this.src).then(({ url, err = '图床服务出错!', server }) => {
-        if (!url) {
-          return this.picBedErrHandler(server, err)
-        }
-        if (this.showFullLinks) {
-          this.$swal({
-            content: showLinks(url),
-            buttons: false
-          })
-        } else {
-          const copyLinkBuilder = LINK_BUILDER[this.copyMod]
-          const copyUrl = copyLinkBuilder(url)
-          copy(copyUrl, ok => {
-            if (!ok) return
-            this.$swal({
-              title: '复制成功',
-              text: copyUrl.slice(0, 30) + '......',
-              icon: 'success',
-              buttons: false,
-              timer: 2000
-            })
-          })
-        }
+    copyLink (url) {
+      copy(url, ok => {
+        if (!ok) return
+        this.$swal({
+          title: '复制成功',
+          text: url.slice(0, 30) + '......',
+          icon: 'success',
+          buttons: false,
+          timer: 2000
+        })
       })
+    },
+
+    fetchMarkLink () {
+      return new Promise((resolve, reject) => {
+        if (!this.src) return reject()
+        if (!this.usePicBed) {
+          return resolve(this.exp.link)
+        }
+        this.$swal('生成图床链接中......', { button: false })
+        crun.$emit('uniform-url', this.src).then(({ url, err = '图床服务出错!', server }) => {
+          if (!url) {
+            this.picBedErrHandler(server, err)
+            return reject()
+          }
+          resolve(url)
+        })
+      })
+    },
+
+    showMarkLink (url) {
+      if (!url) return
+      if (this.showFullLinks) {
+        this.$swal({
+          content: showLinks(url),
+          buttons: false
+        })
+      } else {
+        const copyLinkBuilder = LINK_BUILDER[this.copyMod]
+        const copyUrl = copyLinkBuilder(url)
+        this.copyLink(copyUrl)
+      }
+    },
+
+    buildMarkLink () {
+      this.fetchMarkLink().then(this.showMarkLink, () => {})
     },
 
     picBedErrHandler (server, err) {
