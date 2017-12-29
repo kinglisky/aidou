@@ -7,7 +7,7 @@ import '../style/style.css'
 
 Vue.prototype.$swal = swal
 
-const app = new Vue({
+const APP = new Vue({
   el: '#app',
   data () {
     return {
@@ -19,11 +19,10 @@ const app = new Vue({
 })
 
 // 将配置放在根实例上，用于共享组件内部恭喜
-crun.$emit('get-config', config).then(conf => {
-  app.APP_CONF = conf
-})
+const updateConfig = conf => { APP.APP_CONF = conf }
+crun.$emit('fetch-config', config).then(updateConfig)
 
 // 收藏图标数据
-const updateCollectData = data => { app.COLLECT_DATA = data }
-crun.$on('collect-data-update', updateCollectData)
-crun.$emit('get-collect-data').then(updateCollectData)
+const updateCollectData = data => { APP.COLLECT_DATA = data }
+crun.$emit('fetch-collect-data').then(updateCollectData)
+crun.$on('update-collect-data', updateCollectData)

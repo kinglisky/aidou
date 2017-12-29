@@ -9,16 +9,15 @@ import {
 } from './util'
 
 let CONFIG = merge(config)
-let COLLECT_DATA = {}
-
 cstore.sync('config', conf => {
   CONFIG = conf || merge(config)
   crun.$emit('update-config', CONFIG, true)
 })
 
+let COLLECT_DATA = {}
 cstore.sync('collectData', collectData => {
   COLLECT_DATA = collectData || {}
-  crun.$emit('collect-data-update', COLLECT_DATA, true)
+  crun.$emit('update-collect-data', COLLECT_DATA, true)
 })
 
 // 点击窗口图标打开窗口
@@ -52,7 +51,7 @@ crun.$on('uniform-url', (base64, cb) => {
 })
 
 // 获取配置信息
-crun.$on('get-config', (config, cb) => {
+crun.$on('fetch-config', (config, cb) => {
   cstore.get({ config }).then(res => cb(res.config))
 })
 
@@ -77,6 +76,6 @@ crun.$on('remove-collect-expression', (exp, cb) => {
   }).then(() => cb(date))
 })
 
-crun.$on('get-collect-data', (_, cb) => {
+crun.$on('fetch-collect-data', (_, cb) => {
   cstore.get({ collectData: {} }).then(res => cb(res.collectData))
 })

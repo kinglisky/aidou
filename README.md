@@ -1,6 +1,6 @@
 # aidou
 
-一款便于在 github、gitlab、与个技术社区评论发表情包斗图的插件，可快速搜索生成表情包链接所需的表情链接。
+一款便于在 github、gitlab、与各技术社区评论发表情包斗图的插件，可快速搜索生成表情包链接所需的表情链接。
 
 ![](https://kinglisky.github.io/aidou/demo.png)
 
