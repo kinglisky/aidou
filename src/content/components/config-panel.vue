@@ -22,7 +22,7 @@
           </label>
         </div>
       </li>
-      <li class="config-item">
+      <li class="config-item" v-if="config.shortcut">
         <span class="config-label">快捷键设置：【 {{ shortcutInfo }} 】</span>
         <div class="config-content shortcut-config">
           <label v-for="kb in KB_KEYS" :key="kb.name">
@@ -184,6 +184,7 @@ export default {
     },
 
     setShortcutCode (event) {
+      if (!this.config) return
       this.config.shortcut.code = event.code
     },
 
