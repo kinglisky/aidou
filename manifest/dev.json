@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "AIDOU",
-  "version": "2.1",
+  "version": "2.2",
   "description": "方便搜索表情包并生成图片链接进行斗图",
   "background": {
     "scripts": [

@@ -141,33 +141,33 @@ export default {
 
 <style lang="scss">
 .cpt-app-header {
+  $main-color: #929aa3;
   display: flex;
   align-items: center;
   height: 40px;
   padding: 10px;
+  margin-bottom: 20px;
+  background: #fff;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, .1);
   border: 1px solid #eee;
   border-radius: 40px;
-  margin-bottom: 20px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, .1);
-  background: #fff;
-
-  $main-color: #929aa3;
 
   .search-input {
     display: flex;
     align-items: center;
     flex: 3;
+    height: 40px;
+    padding: 2px 0; 
 
     input {
       display: block;
       flex: 1;
       height: 100%;
-      border: none;
-      outline: none;
       font-size: 14px;
       font-weight: 500;
-
       appearance: none;
+      border: none;
+      outline: none;
     }
 
     .icon-search {
@@ -184,7 +184,6 @@ export default {
     align-items: center;
     flex: 1;
     height: 100%;
-
     list-style: none;
 
     .btn {
@@ -195,7 +194,6 @@ export default {
       .icon {
         font-size: 16px;
         vertical-align: middle;
-
         cursor: pointer;
       }
 
@@ -206,39 +204,36 @@ export default {
         left: 50%;
         width: 70px;
         padding: 4px 0;
-        border-radius: 40px;
         font-size: 10px;
         text-align: center;
+        border-radius: 40px;
 
         &:after {
-          content: "";
+          content: '';
           position: absolute;
           bottom: -3px;
           left: 50%;
           border-top: 4px solid $main-color;
           border-right: 4px solid transparent;
           border-left: 4px solid transparent;
-
           transform: translateX(-50%);
         }
       }
 
       .text {
-        background: $main-color;
         color: #fff;
-        opacity: 0;
-
+        background: $main-color;
         transform: translate3d(-50%, -100%, 0);
         transition: opacity .2s ease-in-out, transform .2s ease-in-out;
+        opacity: 0;
       }
 
       .tip-text {
-        background: #4ad9d9;
         color: #fff;
         font-size: 12px;
-
-        animation: popup .2s 1 linear;
+        background: #4ad9d9;
         transform: translate3d(-50%, -120%, 0);
+        animation: popup .2s 1 linear;
 
 
         &:after {
@@ -247,9 +242,8 @@ export default {
 
         @keyframes popup {
           0% {
-            opacity: 0;
-
             transform: translate3d(-50%, -100%, 0);
+            opacity: 0;
           }
 
           50% {
@@ -257,9 +251,8 @@ export default {
           }
 
           100% {
-            opacity: 1;
-
             transform: translate3d(-50%, -120%, 0);
+            opacity: 1;
           }
         }
       }
@@ -270,8 +263,8 @@ export default {
       }
 
       &:hover.text {
-        opacity: 1;
         transform: translate3d(-50%, -120%, 0);
+        opacity: 1;
       }
     }
   }

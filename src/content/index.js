@@ -76,6 +76,7 @@ chrome.runtime.onMessage.addListener(({ event, params }) => {
 
 let kbTimer = null
 document.addEventListener('keydown', function (event) {
+  if (!config || !config.shortcut) return
   if (kbTimer) {
     clearTimeout(kbTimer)
     kbTimer = null
