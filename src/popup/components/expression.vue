@@ -58,8 +58,8 @@ export default {
     },
 
     usePicBed () {
-      const { APP_CONF: { transformUrl }, HOSTNAME } = this.$root
-      return ~(transformUrl || '').split(',').indexOf(HOSTNAME)
+      const { HOSTNAME } = this.$root
+      return !HOSTNAME.indexOf('github')
     },
 
     active () {
@@ -186,12 +186,11 @@ export default {
   width: 200px;
   height: 200px;
   padding: 10px;
-  border: 1px solid #efefef;
   margin: 20px 0;
   background: #fff;
-
-  cursor: pointer;
+  border: 1px solid #efefef;
   transition: all .2s ease-in;
+  cursor: pointer;
 
   img {
     display: block;
@@ -204,16 +203,15 @@ export default {
     top: 0;
     right: 0;
     padding: 6px;
-    border: 1px solid #eee;
-    border-radius: 2px;
     margin: 10px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, .1);
-    background: #fff;
     color: #aaa;
     font-size: 20px;
-    opacity: 0;
-
+    background: #fff;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .1);
+    border: 1px solid #eee;
+    border-radius: 2px;
     transition: all .2s ease-in-out;
+    opacity: 0;
 
     &:hover,
     &.active {

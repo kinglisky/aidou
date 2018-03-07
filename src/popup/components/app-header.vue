@@ -146,7 +146,7 @@ export default {
   align-items: center;
   height: 40px;
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   background: #fff;
   box-shadow: 0 3px 8px rgba(0, 0, 0, .1);
   border: 1px solid #eee;

@@ -11,24 +11,13 @@ import {
 let CONFIG = merge(config)
 cstore.sync('config', conf => {
   CONFIG = conf || merge(config)
-  crun.$emit('update-config', CONFIG, true)
+  crun.$emit('update-config', CONFIG)
 })
 
 let COLLECT_DATA = {}
 cstore.sync('collectData', collectData => {
   COLLECT_DATA = collectData || {}
-  crun.$emit('update-collect-data', COLLECT_DATA, true)
-})
-
-// 点击窗口图标打开窗口
-let VISIBLE = false
-chrome.browserAction.onClicked.addListener(tab => {
-  crun.$emit('show-app', !VISIBLE, true)
-})
-
-// 同步显隐
-crun.$on('sync-visible', (visible, cb) => {
-  VISIBLE = visible
+  crun.$emit('update-collect-data', COLLECT_DATA)
 })
 
 // 获取表情列表

@@ -14,13 +14,12 @@ const CONFIG = {
       start: 0,
       xml_len: 100,
       reqFrom: 'wap_result'
-    },
-    HOT_SEARCH: 'https://pic.sogou.com/pic/emo/'
+    }
   }
 }
 
 function log (e) {
-  crun.$emit('err', 'Emmmm... 查询服务好像出现了一点问题...', true)
+  crun.$emit('err', 'Emmmm... 查询服务好像出现了一点问题...')
 }
 
 export default {

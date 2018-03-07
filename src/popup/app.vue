@@ -19,7 +19,6 @@
         v-show="view.config">
       </config-panel>
     </transition-group>
-    <span class="icon-close close-btn" @click="toggleView(false)"></span>
   </section>
 </template>
 
@@ -28,11 +27,8 @@ import AppHeader from './components/app-header'
 import SearchPanel from './components/search-panel'
 import ConfigPanel from './components/config-panel'
 import CollectPanel from './components/collect-panel'
-import toggleView from './mixins/toggleView'
 
 export default {
-  mixins: [toggleView],
-
   data () {
     return {
       query: '',
@@ -76,8 +72,13 @@ export default {
 
 html,
 body {
-  width: 100%;
-  height: 100%;
+  width: 500px;
+  height: 600px;
+  overflow: hidden;
+}
+
+body {
+  overflow: hidden;
   font-size: 12px;
 }
 
@@ -97,8 +98,8 @@ ul {
   border: none;
   border-radius: 4px;
   outline: none;
-  cursor: pointer;
   transition: opacity .2s;
+  cursor: pointer;
 
   &.confirm {
     color: #fff;
@@ -122,11 +123,10 @@ ul {
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  padding: 40px 50px 40px 60px;
-  border-left: 1px solid #ebebeb;
-  background: #fff;
+  padding: 30px 40px;
   color: #3e5165;
   font-weight: 200;
+  background: #fff;
 
   .app-wrapper {
     position: relative;
@@ -149,26 +149,8 @@ ul {
   }
   .panels-enter,
   .panels-leave-to {
-    opacity: 0;
-
     transform: translateY(10px);
-  }
-
-  .close-btn {
-    position: absolute;
-    top: 0;
-    left: 0;
-    padding: 20px;
-    color: #929aa3;
-    font-size: 14px;
-
-    cursor: pointer;
-    transition: color .2s ease-in;
-
-    &:hover {
-      color: #4ad9d9;
-    }
+    opacity: 0;
   }
 }
 </style>
-

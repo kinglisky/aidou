@@ -7,8 +7,7 @@ function assetsPath (_path) {
 
 module.exports = {
   entry: {
-    main: './src/content/main.js',
-    content: './src/content/index.js',
+    popup: './src/popup/index.js',
     background: './src/background/index.js'
   },
   output: {
@@ -95,9 +94,9 @@ module.exports = {
   devtool: '#eval-source-map',
   plugins: [
     new HtmlWebpackPlugin({
-      filename: 'content.html',
-      template: './src/content/index.html',
-      chunks: ['main'],
+      filename: 'popup.html',
+      template: './src/popup/index.html',
+      chunks: ['popup'],
       inject: true
     })
   ]
