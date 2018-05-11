@@ -19,16 +19,16 @@
   },
   "homepage": "https://github.com/kinglisky/aidou#readme",
   "devDependencies": {
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.0",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-stage-3": "^6.24.1",
     "copy-webpack-plugin": "^4.3.0",
-    "cross-env": "^5.0.5",
+    "cross-env": "^5.1.5",
     "css-loader": "^0.28.7",
     "file-loader": "^1.1.4",
     "html-webpack-plugin": "^2.30.1",
-    "node-sass": "^4.5.3",
+    "node-sass": "^4.9.0",
     "sass-loader": "^6.0.6",
     "url-loader": "^0.6.2",
     "vue-loader": "^14.1.1",
@@ -37,9 +37,9 @@
     "webpack-dev-server": "^2.9.1"
   },
   "dependencies": {
-    "axios": "^0.17.1",
+    "axios": "^0.18.0",
     "lodash": "^4.17.4",
-    "sweetalert": "^2.0.8",
+    "sweetalert": "^2.1.0",
     "vue": "^2.5.3"
   }
 }
